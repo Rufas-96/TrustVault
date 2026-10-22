@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard · TrustVault</title>
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/app.css?v=5">
+<script src="/js/common.js?v=5" defer></script>
+<script src="/js/dashboard.js?v=5" defer></script>
+</head>
+<body>
+<div class="shell">
+<div class="main">
+<header class="appbar" id="topbar"></header>
+<main class="content" id="content">
+<section class="banner">
+  <div>
+    <span class="eyebrow-dark"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#shield"/></svg>Secure session · access is checked on every request</span>
+    <h1 id="greeting">Dashboard</h1>
+    <p id="greeting-sub">Your documents, what has been shared with you, and what happened to your files.</p>
+  </div>
+  <div class="actions" id="head-actions"></div>
+</section>
+<div class="stats" id="stats"></div>
+<div class="grid side">
+  <section class="card">
+    <div class="card-head"><div><h2>Recently updated</h2><p>Documents you own or have been granted</p></div><a class="btn sm" href="/search">Search all</a></div>
+    <div class="card-body flush" id="recent"></div>
+  </section>
+  <section class="card hidden" id="activity-card">
+    <div class="card-head"><div><h2>Activity on your documents</h2><p>Including refused attempts</p></div><a class="btn sm" href="/activity">View all</a></div>
+    <div class="card-body flush" id="activity"></div>
+  </section>
+  <section class="card hidden" id="viewer-card">
+    <div class="card-head"><div><h2>How your access works</h2></div></div>
+    <div class="card-body"><ul class="muted">
+      <li>You can only see documents an owner has granted to you by name.</li>
+      <li>View access lets you open and download; edit access also lets you change details and upload new versions.</li>
+      <li>Owners can take access away at any time, and it stops working immediately.</li>
+      <li>Every document you open or download is recorded.</li>
+    </ul></div>
+  </section>
+</div>
+<section class="card hidden" id="expiring-card">
+  <div class="card-head"><div><h2>Access that expires soon</h2><p>Grants made to you with an end date</p></div></div>
+  <div class="card-body flush" id="expiring"></div>
+</section>
+</main>
+</div>
+</div>
+</body>
+</html>

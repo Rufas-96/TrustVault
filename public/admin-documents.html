@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>All documents · TrustVault</title>
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/app.css?v=5">
+<script src="/js/common.js?v=5" defer></script>
+<script src="/js/admin-documents.js?v=5" defer></script>
+</head>
+<body>
+<div class="shell">
+<div class="main">
+<header class="appbar" id="topbar"></header>
+<main class="content" id="content">
+<div class="page-head">
+  <div><h1>All documents</h1><p>Metadata for every document. Administrators cannot open or download contents: that needs a grant from the owner, and administrators cannot be granted.</p></div>
+</div>
+<section class="card">
+  <form class="filters" id="filters">
+    <div class="field grow"><label for="f-text">Filter</label><input type="search" id="f-text" placeholder="Title or owner"></div>
+    <div class="field"><label for="f-state">State</label><select id="f-state"><option value="">All</option><option value="live">Active</option><option value="trash">In trash</option></select></div>
+  </form>
+  <div class="card-body flush" id="docs"></div>
+</section>
+</main>
+</div>
+</div>
+</body>
+</html>

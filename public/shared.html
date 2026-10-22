@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shared with me · TrustVault</title>
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/app.css?v=5">
+<script src="/js/common.js?v=5" defer></script>
+<script src="/js/doclist.js?v=5" defer></script>
+</head>
+<body>
+<div class="shell">
+<div class="main">
+<header class="appbar" id="topbar"></header>
+<main class="content" id="content">
+<div id="doclist" data-scope="shared" data-active="/shared" data-roles="owner,viewer"></div>
+<div class="page-head">
+  <div><h1>Shared with me</h1><p>Documents other people have granted you. The owner can change or remove your access at any time.</p></div>
+</div>
+<section class="card">
+  <form class="filters" id="filters">
+    <div class="field grow"><label for="f-q">Name contains</label><input type="search" id="f-q" name="q" placeholder="Title, description or file name"></div>
+    <div class="field"><label for="f-owner">Owner</label><input type="text" id="f-owner" name="owner" placeholder="Name or username"></div><div class="field"><label for="f-category">Category</label><select id="f-category" name="category"><option value="">All categories</option></select></div>
+    <div class="actions"><button class="btn primary" type="submit"><svg class="icon sm" aria-hidden="true"><use href="/img/icons.svg#search"/></svg>Search</button><button class="btn" type="reset">Clear</button></div>
+  </form>
+  <div class="card-body flush" id="results"></div>
+</section>
+</main>
+</div>
+</div>
+</body>
+</html>

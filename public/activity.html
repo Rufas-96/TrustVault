@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Activity · TrustVault</title>
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/app.css?v=5">
+<script src="/js/common.js?v=5" defer></script>
+<script src="/js/activity.js?v=5" defer></script>
+</head>
+<body>
+<div class="shell">
+<div class="main">
+<header class="appbar" id="topbar"></header>
+<main class="content" id="content">
+<div class="page-head">
+  <div><h1 id="activity-title">Activity on my documents</h1><p id="activity-sub">Who opened, downloaded or changed your documents, and who tried and was refused.</p></div>
+  <div class="actions"><select id="outcome" aria-label="Filter by outcome"><option value="">All outcomes</option><option value="success">Allowed</option><option value="denied">Refused</option><option value="failure">Failed</option></select></div>
+</div>
+<section class="card"><div class="card-body flush" id="entries"></div></section>
+</main>
+</div>
+</div>
+</body>
+</html>

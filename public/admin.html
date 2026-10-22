@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin overview · TrustVault</title>
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/app.css?v=5">
+<script src="/js/common.js?v=5" defer></script>
+<script src="/js/admin-overview.js?v=5" defer></script>
+</head>
+<body>
+<div class="shell">
+<div class="main">
+<header class="appbar" id="topbar"></header>
+<main class="content" id="content">
+<section class="banner">
+  <div>
+    <span class="eyebrow-dark"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#shield"/></svg>Administrator · metadata and audit only, never document contents</span>
+    <h1>Administration overview</h1>
+    <p>What needs attention, refused attempts, and permission changes across the system.</p>
+  </div>
+  <div class="actions"><button class="btn" id="verify-btn" type="button"><svg class="icon sm" aria-hidden="true"><use href="/img/icons.svg#shield"/></svg>Verify audit trail</button><a class="btn primary" href="/admin-audit">Open audit log</a></div>
+</section>
+<div id="chain"></div>
+<div class="stats" id="stats"></div>
+<div class="grid cols-2">
+  <section class="card">
+    <div class="card-head"><div><h2>Worth noticing</h2><p>Generated from the audit trail</p></div></div>
+    <div class="card-body flush" id="alerts"></div>
+  </section>
+  <section class="card">
+    <div class="card-head"><div><h2>Last 7 days</h2><p>Allowed and refused actions per day</p></div></div>
+    <div id="chart"></div>
+  </section>
+</div>
+<div class="grid cols-2">
+  <section class="card">
+    <div class="card-head"><div><h2>Recent refused attempts</h2></div><a class="btn sm" href="/admin-audit?outcome=denied">All refusals</a></div>
+    <div class="card-body flush" id="denied"></div>
+  </section>
+  <section class="card">
+    <div class="card-head"><div><h2>Recent permission changes</h2></div><a class="btn sm" href="/admin-permissions">All grants</a></div>
+    <div class="card-body flush" id="perm-changes"></div>
+  </section>
+</div>
+</main>
+</div>
+</div>
+</body>
+</html>

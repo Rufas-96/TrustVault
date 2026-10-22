@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Document · TrustVault</title>
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/app.css?v=5">
+<script src="/js/common.js?v=5" defer></script>
+<script src="/js/document.js?v=5" defer></script>
+</head>
+<body>
+<div class="shell">
+<div class="main">
+<header class="appbar" id="topbar"></header>
+<main class="content" id="content">
+<div class="page-head">
+  <div>
+    <div class="actions" id="doc-badges"></div>
+    <h1 id="doc-title">Document</h1>
+    <p id="doc-desc"></p>
+  </div>
+  <div class="actions" id="doc-actions"></div>
+</div>
+<div id="access-notice"></div>
+<div class="grid side">
+  <div class="stack">
+    <section class="card">
+      <div class="card-head"><div><h2>Versions</h2><p>Every version is kept. Downloading any version is recorded.</p></div></div>
+      <div class="card-body flush" id="versions"></div>
+    </section>
+    <section class="card hidden" id="edit-card">
+      <div class="card-head"><div><h2>Edit details</h2><p>Changes are recorded with the old and new values.</p></div></div>
+      <form class="card-body" id="edit-form">
+        <div class="form-grid">
+          <div class="field full"><label for="e-title">Title</label><input type="text" id="e-title" name="title" maxlength="150" required></div>
+          <div class="field"><label for="e-category">Category</label><select id="e-category" name="category"></select></div>
+          <div class="field full"><label for="e-description">Description</label><textarea id="e-description" name="description" maxlength="1000"></textarea></div>
+        </div>
+        <div class="form-error" id="edit-error" role="alert"></div>
+        <button class="btn primary" type="submit">Save changes</button>
+      </form>
+    </section>
+    <section class="card hidden" id="version-card">
+      <div class="card-head"><div><h2>Upload a new version</h2><p>Earlier versions stay available.</p></div></div>
+      <form class="card-body" id="version-form">
+        <div class="field"><label for="v-file">File</label><input type="file" id="v-file" name="file" accept=".pdf,.docx,.xlsx,.pptx,.png,.jpg,.jpeg,.txt,.csv" required></div>
+        <div class="form-error" id="version-error" role="alert"></div>
+        <button class="btn primary" type="submit">Upload version</button>
+      </form>
+    </section>
+  </div>
+  <aside class="stack">
+    <section class="card">
+      <div class="card-head"><h2>Details</h2></div>
+      <div class="card-body"><dl class="dl" id="details"></dl></div>
+    </section>
+  </aside>
+</div>
+</main>
+</div>
+</div>
+</body>
+</html>

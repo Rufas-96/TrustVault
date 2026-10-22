@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manage access · TrustVault</title>
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/app.css?v=5">
+<script src="/js/common.js?v=5" defer></script>
+<script src="/js/share.js?v=5" defer></script>
+</head>
+<body>
+<div class="shell">
+<div class="main">
+<header class="appbar" id="topbar"></header>
+<main class="content" id="content">
+<div class="page-head">
+  <div><a class="subtle" id="back-link" href="/documents">← Back to document</a><h1 id="share-title">Manage access</h1><p>Grant access to named people, change it, or take it away. Changes apply on the person's very next request.</p></div>
+</div>
+<div class="grid side">
+  <div class="stack">
+    <section class="card">
+      <div class="card-head"><div><h2>Give someone access</h2><p>Search by name or username (at least 2 characters).</p></div></div>
+      <form class="card-body" id="grant-form" autocomplete="off">
+        <div class="form-grid">
+          <div class="field full"><label for="g-user">Person</label><input type="search" id="g-user" placeholder="Start typing a name…"><div id="g-results"></div><div class="help" id="g-selected">Nobody selected yet.</div></div>
+          <div class="field"><label for="g-level">Access</label><select id="g-level"><option value="read">Can view and download</option><option value="edit">Can edit and upload versions</option></select></div>
+          <div class="field"><label for="g-expires">Expires on (optional)</label><input type="date" id="g-expires"><div class="help">Access ends at the end of this day (UTC).</div></div>
+        </div>
+        <div class="form-error" id="grant-error" role="alert"></div>
+        <button class="btn primary" type="submit" id="grant-btn"><svg class="icon sm" aria-hidden="true"><use href="/img/icons.svg#plus"/></svg>Grant access</button>
+      </form>
+    </section>
+    <section class="card">
+      <div class="card-head"><div><h2>People with access</h2><p>You, the owner, always have full access.</p></div></div>
+      <div class="card-body flush" id="grants"></div>
+    </section>
+  </div>
+  <aside class="stack">
+    <section class="card">
+      <div class="card-head"><div><h2>Suggestions</h2><p>People who may need this document</p></div><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#sparkle"/></svg></div>
+      <div class="card-body flush" id="suggestions"></div>
+      <div class="card-body"><p class="subtle">Suggestions come from a simple, visible rule: people who already have access to your other documents, ranked higher for the same category. A suggestion never grants anything. Accepting gives <strong>view-only</strong> access, and both the suggestion and your decision are recorded in the audit trail.</p></div>
+    </section>
+    <div class="notice warning"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#alert"/></svg><div>Only the owner can share. People with edit access cannot pass the document on.</div></div>
+  </aside>
+</div>
+</main>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in · TrustVault</title>
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/css/app.css?v=5">
+<script src="/js/common.js?v=5" defer></script>
+<script src="/js/login.js?v=5" defer></script>
+</head>
+<body>
+<div class="auth-wrap">
+  <aside class="auth-side">
+    <a class="brand" href="/"><span class="brand-mark"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#shield"/></svg></span><span>TrustVault<small>Secure document sharing</small></span></a>
+    <div>
+      <h2>Confidential documents, shared with exactly the right people.</h2>
+      <ul class="check-list">
+        <li><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#check"/></svg>Per-document access, granted to named people</li>
+        <li><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#check"/></svg>Revocation takes effect on the very next request</li>
+        <li><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#check"/></svg>Every access, and every refusal, is recorded</li>
+        <li><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#check"/></svg>Files encrypted at rest with their own keys</li>
+      </ul>
+    </div>
+    <div class="auth-quote"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#info"/></svg><div>Sessions end after 30 minutes without activity, and five failed sign-ins lock an account for 15 minutes.</div></div>
+  </aside>
+  <main class="auth-main">
+    <div class="auth-card">
+      <span class="brand-mark"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#shield"/></svg></span>
+      <h1>Welcome back</h1>
+      <p class="muted">Sign in with the account your administrator gave you.</p>
+      <form id="login-form" novalidate>
+        <div class="field"><label for="username">Username</label><input type="text" id="username" name="username" autocomplete="username" placeholder="e.g. alice" required autofocus></div>
+        <div class="field"><label for="password">Password</label><input type="password" id="password" name="password" autocomplete="current-password" placeholder="••••••••••" required></div>
+        <div class="form-error" id="login-error" role="alert"></div>
+        <button class="btn primary" type="submit" id="login-btn"><svg class="icon sm" aria-hidden="true"><use href="/img/icons.svg#lock"/></svg>Sign in securely</button>
+      </form>
+      <details class="demo-box">
+        <summary>Demo accounts (one per role)</summary>
+        <table>
+          <tbody>
+            <tr><td><span class="badge admin">Admin</span></td><td><code>admin</code></td><td><code>AdminVault#2026</code></td></tr>
+            <tr><td><span class="badge owner">Owner</span></td><td><code>alice</code></td><td><code>OwnerAlice#2026</code></td></tr>
+            <tr><td><span class="badge owner">Owner</span></td><td><code>bob</code></td><td><code>OwnerBob#2026</code></td></tr>
+            <tr><td><span class="badge viewer">Viewer</span></td><td><code>carol</code></td><td><code>ViewerCarol#2026</code></td></tr>
+            <tr><td><span class="badge viewer">Viewer</span></td><td><code>dave</code></td><td><code>ViewerDave#2026</code></td></tr>
+          </tbody>
+        </table>
+      </details>
+      <p class="subtle"><a href="/">← Back to home</a> · <a href="/security">Security model</a></p>
+    </div>
+  </main>
+</div>
+</body>
+</html>

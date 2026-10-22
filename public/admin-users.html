@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Users · TrustVault</title>
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/app.css?v=5">
+<script src="/js/common.js?v=5" defer></script>
+<script src="/js/admin-users.js?v=5" defer></script>
+</head>
+<body>
+<div class="shell">
+<div class="main">
+<header class="appbar" id="topbar"></header>
+<main class="content" id="content">
+<div class="page-head">
+  <div><h1>Users</h1><p>Create accounts, change roles, and deactivate people who leave. Deactivating someone signs them out immediately.</p></div>
+</div>
+<section class="card">
+  <div class="card-head"><div><h2>Create a user</h2><p>External partners get a viewer account; owners decide which documents they see.</p></div></div>
+  <form class="card-body" id="create-form" autocomplete="off">
+    <div class="form-grid">
+      <div class="field"><label for="c-username">Username</label><input type="text" id="c-username" name="username" required maxlength="32"></div>
+      <div class="field"><label for="c-displayName">Display name</label><input type="text" id="c-displayName" name="displayName" required maxlength="80"></div>
+      <div class="field"><label for="c-email">Email</label><input type="email" id="c-email" name="email" required></div>
+      <div class="field"><label for="c-role">Role</label><select id="c-role" name="role"><option value="viewer">Viewer</option><option value="owner">Owner</option><option value="admin">Administrator</option></select></div>
+      <div class="field full"><label for="c-password">Initial password</label><input type="password" id="c-password" name="password" required autocomplete="new-password"><div class="help">At least 10 characters with letters and numbers. Give it to the person through a separate channel.</div></div>
+    </div>
+    <div class="form-error" id="create-error" role="alert"></div>
+    <button class="btn primary" type="submit">Create user</button>
+  </form>
+</section>
+<section class="card">
+  <div class="card-head"><div><h2>All users</h2></div></div>
+  <div class="card-body flush" id="users"></div>
+</section>
+</main>
+</div>
+</div>
+</body>
+</html>

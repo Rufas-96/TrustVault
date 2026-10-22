@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Permissions · TrustVault</title>
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/app.css?v=5">
+<script src="/js/common.js?v=5" defer></script>
+<script src="/js/admin-permissions.js?v=5" defer></script>
+</head>
+<body>
+<div class="shell">
+<div class="main">
+<header class="appbar" id="topbar"></header>
+<main class="content" id="content">
+<div class="page-head">
+  <div><h1>Permissions</h1><p>Every grant in the system. Administrators can take access away but cannot give it: only a document's owner can share.</p></div>
+</div>
+<section class="card">
+  <form class="filters" id="filters">
+    <div class="field grow"><label for="f-text">Filter</label><input type="search" id="f-text" placeholder="Document, owner or person"></div>
+    <div class="field"><label for="f-kind">Show</label><select id="f-kind"><option value="">All grants</option><option value="edit">Edit grants</option><option value="expiring">With an expiry date</option><option value="expired">Expired</option><option value="inactive">Deactivated users</option></select></div>
+  </form>
+  <div class="card-body flush" id="grants"></div>
+</section>
+<section class="card">
+  <div class="card-head"><div><h2>Permission change history</h2><p>From the audit trail</p></div><a class="btn sm" href="/admin-audit?action=permission.">Open in audit log</a></div>
+  <div class="card-body flush" id="history"></div>
+</section>
+</main>
+</div>
+</div>
+</body>
+</html>

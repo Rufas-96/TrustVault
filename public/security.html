@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Security model · TrustVault</title>
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/app.css?v=5">
+</head>
+<body class="public">
+<header class="public-nav">
+  <a class="brand" href="/"><span class="brand-mark"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#shield"/></svg></span><span>TrustVault</span></a>
+  <nav class="links"><a href="/dashboard">Open app</a><a class="btn primary" href="/login">Sign in</a></nav>
+</header>
+<main class="prose">
+  <span class="kicker">How TrustVault protects documents</span>
+  <h1>Security model</h1>
+  <p>How TrustVault decides who can reach a document, how it proves who did, and what taking access away means.</p>
+
+  <h2>Roles</h2>
+  <p>A role says which <em>features</em> someone can use. It never gives access to a particular document; only a grant from that document's owner does.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Can…</th><th>Administrator</th><th>Owner</th><th>Viewer</th></tr></thead>
+    <tbody>
+      <tr><td>Upload new documents</td><td class="no">No</td><td class="yes">Yes</td><td class="no">No</td></tr>
+      <tr><td>Open documents granted to them</td><td class="no">Cannot be granted</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+      <tr><td>Share their own documents</td><td class="no">No</td><td class="yes">Yes</td><td class="no">Owns none</td></tr>
+      <tr><td>See activity on their own documents</td><td>All documents</td><td class="yes">Own documents</td><td class="no">No</td></tr>
+      <tr><td>Read document contents</td><td class="no">Never</td><td class="yes">Own + granted</td><td class="yes">Granted</td></tr>
+      <tr><td>Create users, change roles, deactivate</td><td class="yes">Yes</td><td class="no">No</td><td class="no">No</td></tr>
+      <tr><td>Revoke any grant</td><td class="yes">Yes (narrow only)</td><td>Own documents</td><td class="no">No</td></tr>
+      <tr><td>Grant access</td><td class="no">Never</td><td>Own documents</td><td class="no">No</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Per-document permissions</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Action</th><th>Owner</th><th>Edit grant</th><th>Read grant</th><th>No grant</th></tr></thead>
+    <tbody>
+      <tr><td>See it in lists and search</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">—</td></tr>
+      <tr><td>Open details, download any version</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">—</td></tr>
+      <tr><td>Edit title, description, category</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">—</td><td class="no">—</td></tr>
+      <tr><td>Upload a new version</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">—</td><td class="no">—</td></tr>
+      <tr><td>Grant, change, revoke access</td><td class="yes">✓</td><td class="no">—</td><td class="no">—</td><td class="no">—</td></tr>
+      <tr><td>See the document's activity</td><td class="yes">✓</td><td class="no">—</td><td class="no">—</td><td class="no">—</td></tr>
+      <tr><td>Move to trash, restore, purge</td><td class="yes">✓</td><td class="no">—</td><td class="no">—</td><td class="no">—</td></tr>
+    </tbody>
+  </table></div>
+  <p>There are no folders and no inherited permissions, on purpose: getting access to one file never brings access to others. Grants can carry an expiry date. A document in the trash can be reached by nobody except its owner, and only to restore or purge it.</p>
+
+  <h2>Where the decision is made</h2>
+  <p>Every request that touches a single document goes through one server function, <code>authorize()</code> in <code>src/authz.js</code>, before anything is read or changed. It reads the live permission table each time. Lists and search apply the same rule inside the database query, so a document you cannot open never appears in results or counts. Hiding a button in the interface is never what protects anything.</p>
+  <p>When you have no access, the answer is “not found”, whether the document exists or not, so guessing IDs tells you nothing. Document IDs are random UUIDs.</p>
+
+  <h2>Taking access away</h2>
+  <p>TrustVault never issues share links, download tokens, or signed URLs. The only credential is your session, which is checked on the server on every request. So:</p>
+  <ul>
+    <li>Revoking a grant: the person's next request for that document is refused.</li>
+    <li>Deactivating a person: all of their sessions are deleted at once.</li>
+    <li>Changing your password: all of your other sessions end.</li>
+  </ul>
+  <p>The cost is that every download goes through the application server, and a file someone already downloaded cannot be recalled. That copy is why the audit trail matters.</p>
+
+  <h2>The audit trail</h2>
+  <ul>
+    <li>Records sign-ins, uploads, views, downloads, edits, deletions, restores, permission changes, sharing suggestions and admin actions, with who, when, from where, and the outcome.</li>
+    <li>Refused attempts are recorded too, with the reason.</li>
+    <li>A download is recorded <em>before</em> the file is sent. If the record cannot be written, the file is not served.</li>
+    <li>The database rejects any update or delete of audit rows.</li>
+    <li>Each entry carries an HMAC of the previous entry's hash plus its own contents. Changing or removing an entry breaks the chain, and the administrator's “Verify” button shows exactly where.</li>
+    <li>Each entry is also written to the server log, a second copy held outside the database.</li>
+  </ul>
+
+  <h2>Files</h2>
+  <p>Uploads are checked against an allow-list, and the file's first bytes must match its extension. Files are encrypted with AES-256-GCM using a key per file, stored under random names outside the web root, and bound to their database record so they cannot be swapped. Downloads are always served as attachments with headers that stop a browser running them.</p>
+
+  <h2>What this does not protect against</h2>
+  <p>Someone who is legitimately granted a document can still copy what they read. Someone who controls the server and holds the keys could alter the system. These limits, and the others we accepted, are listed in THREATS.md in the repository.</p>
+</main>
+<footer class="public-foot">TrustVault · <a href="/">Home</a> · <a href="/login">Sign in</a></footer>
+</body>
+</html>

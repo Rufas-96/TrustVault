@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Audit log · TrustVault</title>
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/app.css?v=5">
+<script src="/js/common.js?v=5" defer></script>
+<script src="/js/admin-audit.js?v=5" defer></script>
+</head>
+<body>
+<div class="shell">
+<div class="main">
+<header class="appbar" id="topbar"></header>
+<main class="content" id="content">
+<div class="page-head">
+  <div><h1>Audit log</h1><p>Every sign-in, upload, view, download, change, deletion and permission change, including refused attempts. Entries cannot be edited or removed.</p></div>
+  <div class="actions"><button class="btn" id="verify-btn" type="button"><svg class="icon sm" aria-hidden="true"><use href="/img/icons.svg#shield"/></svg>Verify integrity</button><a class="btn" id="export-btn" href="/api/admin/audit/export.csv"><svg class="icon sm" aria-hidden="true"><use href="/img/icons.svg#download"/></svg>Export CSV</a></div>
+</div>
+<div id="verify-result"></div>
+<section class="card">
+  <form class="filters" id="filters">
+    <div class="field"><label for="f-actor">Person</label><input type="text" id="f-actor" name="actor" placeholder="Username"></div>
+    <div class="field"><label for="f-action">Action</label><select id="f-action" name="action">
+      <option value="">All actions</option>
+      <option value="document.">All document actions</option>
+      <option value="document.download">Downloads</option>
+      <option value="document.view">Views</option>
+      <option value="document.upload">Uploads</option>
+      <option value="document.update">Edits</option>
+      <option value="document.delete">Deletions</option>
+      <option value="permission.">Permission changes</option>
+      <option value="suggestion.">Sharing suggestions</option>
+      <option value="auth.login">Sign-ins</option>
+      <option value="user.">User administration</option>
+      <option value="security.">Security events</option>
+      <option value="access.">Role refusals</option>
+    </select></div>
+    <div class="field"><label for="f-outcome">Outcome</label><select id="f-outcome" name="outcome"><option value="">All</option><option value="success">Allowed</option><option value="denied">Refused</option><option value="failure">Failed</option></select></div>
+    <div class="field"><label for="f-document">Document ID</label><input type="text" id="f-document" name="document" placeholder="UUID"></div>
+    <div class="field"><label for="f-from">From</label><input type="date" id="f-from" name="from"></div>
+    <div class="field"><label for="f-to">To</label><input type="date" id="f-to" name="to"></div>
+    <div class="actions"><button class="btn primary" type="submit">Filter</button><button class="btn" type="reset">Clear</button></div>
+  </form>
+  <div class="card-body flush" id="entries"></div>
+</section>
+</main>
+</div>
+</div>
+</body>
+</html>

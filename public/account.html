@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Account · TrustVault</title>
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/app.css?v=5">
+<script src="/js/common.js?v=5" defer></script>
+<script src="/js/account.js?v=5" defer></script>
+</head>
+<body>
+<div class="shell">
+<div class="main">
+<header class="appbar" id="topbar"></header>
+<main class="content" id="content">
+<div class="page-head">
+  <div><h1>Account & sessions</h1><p>Your profile, your password, and every place you are signed in.</p></div>
+</div>
+<div class="grid cols-2">
+  <section class="card">
+    <div class="card-head"><h2>Profile</h2></div>
+    <div class="card-body"><dl class="dl" id="profile"></dl></div>
+    <div class="card-body" id="role-help"></div>
+  </section>
+  <section class="card">
+    <div class="card-head"><div><h2>Change password</h2><p>Changing it signs you out everywhere else.</p></div></div>
+    <form class="card-body" id="password-form">
+      <div class="field"><label for="current">Current password</label><input type="password" id="current" autocomplete="current-password" required></div>
+      <div class="field"><label for="next">New password</label><input type="password" id="next" autocomplete="new-password" minlength="10" required><div class="help">At least 10 characters, with letters and numbers.</div></div>
+      <div class="field"><label for="confirm">Confirm new password</label><input type="password" id="confirm" autocomplete="new-password" required></div>
+      <div class="form-error" id="password-error" role="alert"></div>
+      <button class="btn primary" type="submit">Update password</button>
+    </form>
+  </section>
+</div>
+<section class="card">
+  <div class="card-head"><div><h2>Active sessions</h2><p>Sessions end after 30 minutes idle or 8 hours in total. End any you do not recognise.</p></div></div>
+  <div class="card-body flush" id="sessions"></div>
+</section>
+</main>
+</div>
+</div>
+</body>
+</html>
