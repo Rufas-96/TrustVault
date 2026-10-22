@@ -1,0 +1,20 @@
+# Render Blueprint: New → Blueprint → pick this repository.
+services:
+  - type: web
+    name: trustvault
+    runtime: node
+    plan: free
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: "24"
+      - key: FILE_ENCRYPTION_KEY
+        generateValue: true
+      - key: AUDIT_HMAC_KEY
+        generateValue: true
+      - key: SEED_DEMO
+        value: "true"

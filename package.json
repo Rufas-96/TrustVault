@@ -1,0 +1,22 @@
+{
+  "name": "trustvault",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Secure document sharing with per-document permissions and a tamper-evident audit trail",
+  "main": "server.js",
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning server.js",
+    "dev": "node --disable-warning=ExperimentalWarning --watch server.js",
+    "setup": "node --disable-warning=ExperimentalWarning scripts/setup.js",
+    "keys": "node scripts/generate-keys.js",
+    "mutation": "node scripts/mutation-check.js",
+    "test": "node --disable-warning=ExperimentalWarning --test --test-concurrency=1 \"test/**/*.test.js\""
+  },
+  "engines": {
+    "node": ">=22.13"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "multer": "^2.0.2"
+  }
+}
