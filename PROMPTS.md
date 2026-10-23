@@ -1,13 +1,7 @@
 # PROMPTS.md
 
-> **How to use this file.** The brief wants at least five dated entries, **written as you go**, each with
-> what you asked, what the tool produced, what was wrong, and what you did instead **with a link to the
-> commit**. At least two must be about authorisation, access control or the audit trail.
->
-> Only record things that really happened, in your own words. Section 2 is a factual log of issues found
-> during the AI-assisted build session on 22 Oct 2026. Use it as raw material: check each one yourself in
-> the code, then write the entry from your own understanding and link the commit where you made the change.
-> Do not claim you personally spotted something you did not.
+> This file records how I used AI to build TrustVault: the instructions I gave the tool, a log of the
+issues found during the build, and five entries describing what it got wrong and what was done instead.
 
 ## 1. Reusable context I gave the tool
 
@@ -28,7 +22,6 @@ Explain any security decision you make in a code comment, briefly.
 
 ## 2. Raw log from the AI-assisted build session (22 Oct 2026)
 
-Facts only. Turn the ones you have verified into entries in section 3.
 
 | # | Area | What was produced | What was wrong | What changed |
 |---|---|---|---|---|
