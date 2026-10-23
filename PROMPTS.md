@@ -41,32 +41,47 @@ Facts only. Turn the ones you have verified into entries in section 3.
 
 ## 3. Entries
 
-### Entry 1 — YYYY-MM-DD — _title_
-- **What I asked:**
-- **What it produced:**
-- **What was wrong (specifically):**
-- **What I did instead:** … (commit: `<link>`)
+### Entry 1 — 2026-10-22 — Reactivated users got their old sessions back
+- **What I asked:** Let admins deactivate a user so they lose access immediately.
+- **What it produced:** Deactivation deleted the user's sessions, and the session lookup
+  also rejected inactive users.
+- **What was wrong:** `npm run mutation` showed I could delete the "destroy sessions" line
+  and no test failed, because the is_active check hid it. But if the user was later
+  reactivated, an old (possibly stolen) session would work again.
+- **What I did instead:** Added the test "reactivating a user does not bring their old
+  sessions back" in test/authz.test.js, which fails if that line is removed.
+  (commit: none, fixed before the project was put under git; see the test above)
 
-### Entry 2 — YYYY-MM-DD — _authorisation / access control_
-- **What I asked:**
-- **What it produced:**
-- **What was wrong:**
-- **What I did instead:** … (commit: `<link>`)
+### Entry 2 — 2026-10-22 — Expired access could silently become permanent
+- **What I asked:** Let an owner change someone's access level (read/edit) on the Manage access page.
+- **What it produced:** A level dropdown on every grant in the list, including expired ones.
+- **What was wrong (specifically):** Changing the level of an **expired** grant sent no expiry date
+  with the update, so the person silently got permanent access again.
+- **What I did instead:** The dropdown is now disabled for expired grants (public/js/share.js), with
+  the hint "Expired. Grant again to renew." Renewing access needs a new grant with a new expiry.
+  (commit: none, fixed before the project was put under git)
 
-### Entry 3 — YYYY-MM-DD — _audit trail_
-- **What I asked:**
-- **What it produced:**
-- **What was wrong:**
-- **What I did instead:** … (commit: `<link>`)
+### Entry 3 — 2026-10-22 — The CSV injection test was not testing anything
+- **What I asked:** Make the audit log CSV export safe to open in Excel (no formula injection), with a test.
+- **What it produced:** A test that tried to sign in with the username `=HYPERLINK(...)` and checked the export.
+- **What was wrong (specifically):** The attempted username is stored inside the JSON "details" cell,
+  which starts with `{`, so the formula protection was never triggered. The test failed for the wrong reason.
+- **What I did instead:** Rewrote the test to write a hostile actor name straight into the audit log and
+  check that every cell starting with = + - @ is prefixed with ' ("CSV export neutralises spreadsheet
+  formulas" in test/audit.test.js). (commit: none, fixed before the project was put under git)
 
-### Entry 4 — YYYY-MM-DD
-- **What I asked:**
-- **What it produced:**
-- **What was wrong:**
-- **What I did instead:** … (commit: `<link>`)
+### Entry 4 — 2026-10-22 — A security check with no test of its own
+- **What I asked:** Make sure deactivated users cannot access any document.
+- **What it produced:** accessLevel() in src/authz.js returns null for inactive users.
+- **What was wrong (specifically):** When I ran `npm run mutation`, removing that check did not fail any
+  test. It was only covered indirectly through the session layer, so it was untested defence in depth.
+- **What I did instead:** Added a direct unit test on authz.accessLevel() for active and inactive users
+  (test/authz.test.js). (commit: none, fixed before the project was put under git)
 
-### Entry 5 — YYYY-MM-DD
-- **What I asked:**
-- **What it produced:**
-- **What was wrong:**
-- **What I did instead:** … (commit: `<link>`)
+### Entry 5 — 2026-10-22 — The upload form ignored the typed title
+- **What I asked:** Build the upload and edit forms for documents.
+- **What it produced:** JavaScript that read the fields as form.title, form.category and form.description.
+- **What was wrong (specifically):** form.title is the form element's own "title" attribute, not the input
+  named "title", so whatever the user typed was ignored.
+- **What I did instead:** Changed it to form.elements.title (and the same for category and description) in
+  public/js/upload.js and public/js/document.js. (commit: none, fixed before the project was put under git)
