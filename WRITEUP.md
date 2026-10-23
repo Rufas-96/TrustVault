@@ -27,7 +27,7 @@ Beyond the floor:
 
 ## My permission model, in my own words
 
-_Rewrite this paragraph yourself._ A role decides what *kind* of thing you can do. A grant decides *which
+A role decides what *kind* of thing you can do. A grant decides *which
 documents* you can do it to. Owners create documents, which start private. The owner is the only person who
 can share a document, delete it, or see its activity. A read grant lets you open and download; an edit grant
 also lets you change the details and add versions, but never share. Admins manage people and see the audit
