@@ -1,7 +1,5 @@
 # Write-up
 
-> Review and rewrite this in your own words before submitting. Interviewers will ask you about every
-> sentence here.
 
 ## What I built
 
@@ -69,6 +67,15 @@ It does not protect against someone who holds both the database and the key. I s
 I used Claude (through Claude Code) to write most of the code: the Express routes, the database schema, the audit chain, the frontend pages and the tests. I gave it a fixed set of rules to follow every time. All document access goes through authorize() in src/authz.js, there are no share links or admin bypass, every refusal is logged, and every security check needs a test that fails if the check is removed. The full block is in PROMPTS.md section 1.
 
 I didn't trust "all tests pass" as proof, because the AI wrote both the code and the tests. So I used npm run mutation, which deletes each security check one at a time and confirms that some test fails. I also went through every page as each role.
+
+- **Reactivated users got old sessions back.** The mutation run showed the "end sessions on deactivation"
+  line could be deleted with no test failing. Fixed with a dedicated test.
+- **Expired access could become permanent.** Changing the level of an expired grant sent no expiry date.
+  The level selector is now disabled for expired grants.
+- **The CSV injection test tested nothing.** The hostile value landed in a cell the protection never checks.
+  The test was rewritten to exercise the real check.
+- **A check with no test:** `accessLevel()` rejecting inactive users had no direct test. One was added.
+- **The upload form ignored the typed title** (`form.title` vs `form.elements.title`). Fixed in the frontend.
 
 ## What is unfinished
 
