@@ -1,6 +1,6 @@
 # PROMPTS.md
 
-> This file records how I used AI to build TrustVault: the instructions I gave the tool, a log of the
+This file records how I used AI to build TrustVault: the instructions I gave the tool, a log of the
 issues found during the build, and five entries describing what it got wrong and what was done instead.
 
 ## 1. Reusable context I gave the tool
@@ -38,8 +38,8 @@ Explain any security decision you make in a code comment, briefly.
 - **What I asked:** Let admins deactivate a user so they lose access immediately.
 - **What it produced:** Deactivation deleted the user's sessions, and the session lookup
   also rejected inactive users.
-- **What was wrong:** `npm run mutation` showed I could delete the "destroy sessions" line
-  and no test failed, because the is_active check hid it. But if the user was later
+- **What was wrong:** The mutation run (`npm run mutation`) showed the "destroy sessions" line
+  could be deleted with no test failing, because the is_active check hid it. But if the user was later
   reactivated, an old (possibly stolen) session would work again.
 - **What I did instead:** Added the test "reactivating a user does not bring their old
   sessions back" in test/authz.test.js, which fails if that line is removed.
@@ -66,8 +66,8 @@ Explain any security decision you make in a code comment, briefly.
 ### Entry 4 — 2026-10-22 — A security check with no test of its own
 - **What I asked:** Make sure deactivated users cannot access any document.
 - **What it produced:** accessLevel() in src/authz.js returns null for inactive users.
-- **What was wrong (specifically):** When I ran `npm run mutation`, removing that check did not fail any
-  test. It was only covered indirectly through the session layer, so it was untested defence in depth.
+- **What was wrong (specifically):** The mutation run (`npm run mutation`) showed that removing this check
+  did not fail any test. It was only covered indirectly through the session layer, so it was untested defence in depth.
 - **What I did instead:** Added a direct unit test on authz.accessLevel() for active and inactive users
   (test/authz.test.js). (commit: none, fixed before the project was put under git)
 

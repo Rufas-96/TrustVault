@@ -77,6 +77,9 @@ I didn't trust "all tests pass" as proof, because the AI wrote both the code and
 - **A check with no test:** `accessLevel()` rejecting inactive users had no direct test. One was added.
 - **The upload form ignored the typed title** (`form.title` vs `form.elements.title`). Fixed in the frontend.
 
+Full details for each are in PROMPTS.md section 3. These were fixed before the project was put under git,
+so there are no separate commits to link. The tests named there are the proof.
+
 ## What is unfinished
 
 - Ownership transfer when an owner leaves (their documents stay readable by existing grantees; T-67).
