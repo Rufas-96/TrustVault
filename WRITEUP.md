@@ -66,8 +66,9 @@ It does not protect against someone who holds both the database and the key. I s
 
 ## How I used AI, and where it was wrong
 
-_Fill this in from PROMPTS.md, in your own words. Be specific: what it produced, what was wrong, how you
-found it, and the commit that fixed it._
+I used Claude (through Claude Code) to write most of the code: the Express routes, the database schema, the audit chain, the frontend pages and the tests. I gave it a fixed set of rules to follow every time. All document access goes through authorize() in src/authz.js, there are no share links or admin bypass, every refusal is logged, and every security check needs a test that fails if the check is removed. The full block is in PROMPTS.md section 1.
+
+I didn't trust "all tests pass" as proof, because the AI wrote both the code and the tests. So I used npm run mutation, which deletes each security check one at a time and confirms that some test fails. I also went through every page as each role.
 
 ## What is unfinished
 
