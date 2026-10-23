@@ -23,7 +23,7 @@ Beyond the floor:
 - rule-based sharing suggestions that never grant anything on their own
 - a mutation script that proves the tests actually test the checks
 
-## My permission model, in my own words
+## My permission model
 
 A role decides what *kind* of thing you can do. A grant decides *which
 documents* you can do it to. Owners create documents, which start private. The owner is the only person who
