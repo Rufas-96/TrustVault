@@ -44,6 +44,26 @@ tables are on the `/security` page and in [WRITEUP.md](WRITEUP.md).
 **Where is the authorisation decision made?** In `authorize()` in [`src/authz.js`](src/authz.js), called
 first by every route that touches a document. Lists and search use the same rule in SQL (`ACCESSIBLE_SQL`).
 
+## What makes this TrustVault different: leak forensics
+
+Access control stops the wrong person. It cannot stop the right person forwarding what they were given,
+and the brief's first question after a leak is *"who opened this?"*. So TrustVault never hands out the same
+file twice:
+
+- **Traceable downloads.** Every download is stamped with its own trace ID (`src/trace.js`): a visible
+  footer in text/CSV, a comment after a PDF's end marker, the archive comment of Office files, a PNG text
+  chunk, a JPEG comment. The audit entry records the trace ID and the SHA-256 of the exact bytes delivered.
+- **Leak Tracer** (`/trace`). Drop a leaked file or type its trace ID; TrustVault names the download it came
+  from. Owners only see their own documents, admins see everything, every lookup is audited, and the file
+  is never stored.
+- **Access reviews** (`/reviews`). Grants not confirmed for 30 days come up for review; owners keep or revoke
+  each one, and admins are alerted to grants nobody has confirmed in 90 days.
+- **"Why can I see this?"** on every document tells a reader who granted their access, until when, and that
+  their copy is traceable.
+
+Try it: sign in as `carol`, download her salary letter, then sign in as `alice` and drop that file into the
+Leak Tracer.
+
 ## Stack, and why
 
 | Piece | Choice | Why |
@@ -73,8 +93,8 @@ In development, encryption and audit keys are generated once into `data/dev-keys
 ### Tests
 
 ```bash
-npm test            # 64 tests: access control, audit trail, uploads, sessions/CSRF
-npm run mutation    # removes 20 security checks one at a time and confirms the tests catch each
+npm test            # 78 tests: access control, audit trail, uploads, sessions/CSRF, leak forensics
+npm run mutation    # removes 25 security checks one at a time and confirms the tests catch each
 ```
 
 ## Deploy (Render, free tier)
@@ -141,6 +161,8 @@ scripts/                setup, generate-keys, mutation-check
 | `/share?id=` | Document owner | Grant, change, revoke, suggestions |
 | `/activity` | Owner | Activity (including refusals) on my documents |
 | `/trash` | Owner | Restore or permanently delete |
+| `/reviews` | Owner | Access reviews: keep or revoke grants not confirmed in 30 days |
+| `/trace` | Owner, admin | Leak Tracer: drop a leaked file or enter its trace ID to find whose copy it was |
 | `/account` | Everyone | Profile, password, sessions |
 | `/admin` | Admin | Alerts, chain status, 7-day chart, recent refusals and permission changes |
 | `/admin-audit` | Admin | Full audit log, filters, verify, CSV export |

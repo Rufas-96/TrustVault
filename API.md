@@ -82,6 +82,16 @@ No admin endpoint returns file contents, and none grants document access.
 | `GET /admin/permissions` | — | Every grant. |
 | `DELETE /admin/permissions/:documentId/:userId` | — | Revoke (narrowing only). Audited with `byAdministrator: true`. |
 
+## Leak forensics and access reviews — `src/routes/forensics.js`
+
+| Method & path | Who may call | Body / query | Notes |
+|---|---|---|---|
+| `POST /trace` | Role **owner** or **admin** | multipart `file` (a suspected leaked copy) **or** JSON `{traceId}` | Finds the download a copy came from, by the trace ID inside it or by its SHA-256. Owners only get matches for documents they own; admins get all, with IPs. The file is never stored. Every lookup is audited as `trace.lookup`. |
+| `GET /reviews` | Role **owner** | — | Grants on your live documents, oldest confirmation first, with `due` after 30 days. |
+| `POST /documents/:id/permissions/:userId/confirm` | Doc level **owner** | — | Confirms a grant is still needed (resets its review clock). Audited as `permission.review`. |
+
+Every `GET /documents/:id/download` response carries an `X-TrustVault-Trace` header with that copy's trace ID.
+
 ## Other
 
 | Method & path | Who | Notes |

@@ -22,6 +22,10 @@ Beyond the floor:
 - session management (see and end your own sessions)
 - rule-based sharing suggestions that never grant anything on their own
 - a mutation script that proves the tests actually test the checks
+- **leak forensics**: every download is a uniquely stamped copy, and a Leak Tracer identifies whose copy a
+  leaked file is (by its trace ID or its fingerprint)
+- **access reviews**: grants go stale after 30 days and owners keep or revoke them
+- a "Why can I see this?" panel on every document
 
 ## My permission model
 

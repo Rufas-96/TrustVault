@@ -93,20 +93,35 @@ is currently caught by at least one failing test (see "Testing the tests" at the
 | T-61 | **Free hosting with ephemeral disk**: a restart or redeploy wipes the database, files and audit log, and the seed data is recreated. | Free tier. Losing the audit log is an evidence problem, so in production you would mount a persistent disk (`DATA_DIR`) and ship audit lines to external storage. The stdout copy (T-23b) survives in the platform's log stream. |
 | T-62 | **Rate limits are in memory**, so they reset on restart and are not shared across instances. | Single-instance deployment. A real deployment would use Redis or the platform's WAF. |
 | T-63 | **Administrators see document titles** in the audit log and admin pages. A title like "Salary letter - Carol" is itself sensitive. | Oversight needs to know *what* was accessed. Titles are metadata; contents are never shown. |
-| T-64 | **A legitimately granted reader can copy, photograph or forward** what they read. | No web app can prevent this. Watermarking or DRM is out of scope; the audit trail records who opened it. |
+| T-64 | **A legitimately granted reader can copy, photograph or forward** what they read. | No web app can prevent copying. What TrustVault adds is attribution: every download is a uniquely stamped copy, so a leaked file can be traced to the person and moment it left (T-70). Robust watermarking that survives re-saving or photographs is out of scope. |
 | T-65 | **No email verification, MFA or SSO.** | Out of scope for the week. Accounts are created by an administrator. |
 | T-66 | **Trust proxy is set to 1 hop** in production; client IPs in the audit depend on that being correct for the host. | Correct for Render, which sits behind exactly one proxy. |
 | T-67 | **When an owner is deactivated, their documents stay accessible to existing grantees**, and there is no ownership transfer. | Deliberate, so business continuity does not depend on one person. Admins can revoke grants if needed. Ownership transfer is listed as unfinished. |
+
+## G. After access was legitimately given: leaks and stale access
+
+Everything above stops the wrong person. These threats are about the *right* person, or access that
+outlived its purpose. Tests are in `test/forensics.test.js`.
+
+| ID | Threat | What I did | Test | Status |
+|---|---|---|---|---|
+| T-70 | **A leaked copy cannot be attributed.** Ten people were granted the file; it turns up outside. Who leaked it? | Every download is a unique copy stamped with its own trace ID (`src/trace.js`), placed so the file stays valid: visible footer (txt/csv), comment after `%%EOF` (pdf), zip archive comment (docx/xlsx/pptx), `tEXt` chunk with correct CRC (png), COM segment (jpeg). The stored original is never altered. The audit entry records the trace ID and the SHA-256 of the exact bytes delivered, written before sending. | T-70 (5 tests) | Closed |
+| T-71 | **The Leak Tracer becomes an oracle** for other people's documents ("whose download is this ID?"). | Owners only get matches for documents they currently own; viewers get 403; admins see all. Every lookup, with or without a match, is audited as `trace.lookup`, and a successful trace raises a high admin alert. | T-71 | Closed |
+| T-72 | **Stripping or defeating the stamp:** delete the footer, re-save the PDF, retype the text, photograph the screen. | An unmodified copy still matches by SHA-256. The tracer accepts either a trace ID or a file. | T-71 ("footer removed") | **Accepted**: a determined insider who re-saves or photographs the content defeats it. Forensic watermarking that survives re-encoding is out of scope. |
+| T-73 | **Stale access:** a contract ends or a person changes team, and nobody remembers to revoke. | Access reviews: grants not confirmed for 30 days are flagged for their owner (`/reviews`), who keeps or revokes each one; both are audited (`permission.review`, `permission.revoke`). Admins are alerted to grants unconfirmed for 90 days. | T-73 | Partly accepted: a review is a prompt, not an automatic revoke. Auto-expiry is available per grant. |
+| T-74 | **The tracer stores what it is given**, creating a second, unprotected copy of a leaked document. | The uploaded file is held in memory only to hash it and search for a trace ID, never written to disk. | T-74 | Closed |
+| T-75 | **A reader does not realise their copy is traceable**, which weakens deterrence. | The download message shows the copy's trace ID, and "Why can I see this?" on every document says that each copy is traceable. | — | Closed (UI) |
 
 ---
 
 ## Testing the tests
 
 The brief says a judge will remove one authorisation check and run the tests. `scripts/mutation-check.js`
-does exactly that for 20 checks: owner check, expiry check, trash check, level check, missing-grant check,
-inactive-user check, search access filter, version scoping, upload role, download audit, upload validation,
-admin gate, session deletion on deactivation, admin-grant block, suggestion scoping, directory role, idle
-timeout, CSRF check, logout session deletion, and hash-chain verification.
+does exactly that for 25 checks: owner check, expiry check, trash check, level check, missing-grant check,
+inactive-user check, search access filter, version scoping, upload role, download audit, download trace
+stamping, tracer owner scoping, tracer role gate, review-confirm authorisation, tracer lookup audit, upload
+validation, admin gate, session deletion on deactivation, admin-grant block, suggestion scoping, directory
+role, idle timeout, CSRF check, logout session deletion, and hash-chain verification.
 
 The first run found **two checks no test noticed** (both are now covered):
 
