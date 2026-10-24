@@ -44,7 +44,7 @@ function addVersion(ctx, { req, doc, user, file }) {
       insertVersion(db, { versionId, documentId: doc.id, version, file, storageKey, userId: user.id, now });
       db.prepare('UPDATE documents SET current_version = ?, updated_at = ? WHERE id = ?').run(version, now, doc.id);
       audit.record({
-        req, action: 'document.version_upload', documentId: doc.id,
+        req, actor: user, action: 'document.version_upload', documentId: doc.id,
         details: { title: doc.title, version, file: file.name, size: file.buffer.length, sha256: sha256(file.buffer) },
       });
       return version;

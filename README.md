@@ -18,12 +18,20 @@ Secure document sharing where the wrong person cannot reach a document, and you 
 |---|---|---|---|
 | Administrator | `admin` | `AdminVault#2026` | Overview alerts, audit log, Verify integrity, deactivate a user. You cannot open document contents. |
 | Owner | `alice` | `OwnerAlice#2026` | Owns HR documents; shared two with `carol`, one with `dave` |
-| Owner | `bob` | `OwnerBob#2026` | Owns Legal/Engineering documents; `dave` can edit the MSA |
+| Owner | `bob` | `OwnerBob#2026` | Owns Legal/Engineering/Sales documents; `dave` can edit the MSA; an old NDA is in the trash |
+| Owner | `raj` | `OwnerRaj#2026` | Owns Finance/Audit documents; audit papers shared with `priya` for 30 days |
 | Viewer | `carol` | `ViewerCarol#2026` | Sees only her salary letter and the handbook |
-| Viewer (external) | `dave` | `ViewerDave#2026` | External partner: one edit grant, one expiring grant |
+| Viewer (external) | `dave` | `ViewerDave#2026` | External partner: one edit grant, one expiring grant, one already expired |
+| Viewer (external) | `priya` | `ViewerPriya#2026` | External auditor: view-only access to the audit papers |
 
-"Payroll summary Q3 2026" (alice) and "Board minutes" (bob) are shared with nobody: good targets for testing
-access control. These passwords are public on purpose; set `SEED_DEMO=false` for anything real.
+"Payroll summary Q3 2026" (alice), "Board minutes" (bob) and "Vendor payment register" (raj) are shared
+with nobody: good targets for testing access control. These passwords are public on purpose; set
+`SEED_DEMO=false` for anything real.
+
+The seed also writes a few demo events (downloads, refused attempts, failed sign-ins) so the dashboards
+and admin alerts are not empty. Each one is marked `demo: true` in its audit details. To start over
+locally, stop the server and run `npm run reset-demo`: it moves the old database into
+`data/backup-<time>/` and seeds fresh data.
 
 ## Roles and permissions in one paragraph
 

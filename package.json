@@ -10,7 +10,8 @@
     "setup": "node --disable-warning=ExperimentalWarning scripts/setup.js",
     "keys": "node scripts/generate-keys.js",
     "mutation": "node scripts/mutation-check.js",
-    "test": "node --disable-warning=ExperimentalWarning --test --test-concurrency=1 \"test/**/*.test.js\""
+    "test": "node --disable-warning=ExperimentalWarning --test --test-concurrency=1 \"test/**/*.test.js\"",
+    "reset-demo": "node --disable-warning=ExperimentalWarning scripts/reset-demo.js"
   },
   "engines": {
     "node": ">=22.13"
