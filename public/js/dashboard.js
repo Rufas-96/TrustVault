@@ -21,7 +21,7 @@
   const s = data.stats;
   const stats = $('#stats');
   const QUICK = isOwner
-    ? [['/upload', 'upload', 'Upload a document', 'Starts private, encrypted on arrival', 'violet'], ['/search', 'search', 'Search the vault', 'Only what you can open', 'blue'], ['/shared', 'users', 'Shared with me', 'Files others granted you', 'teal'], ['/activity', 'activity', 'Who opened my files', 'Including refused attempts', 'amber']]
+    ? [['/upload', 'upload', 'Upload a document', 'Starts private, encrypted on arrival', 'violet'], ['/reviews', 'review', 'Review access', s.dueForReview ? s.dueForReview + ' grant' + (s.dueForReview === 1 ? '' : 's') + ' need a decision' : 'Everything is up to date', 'amber'], ['/trace', 'fingerprint', 'Trace a leak', 'Find whose copy a file is', 'teal'], ['/activity', 'activity', 'Who opened my files', 'Including refused attempts', 'blue']]
     : [['/shared', 'users', 'Shared with me', 'Files granted to you by name', 'teal'], ['/search', 'search', 'Search the vault', 'Only what you can open', 'blue'], ['/account', 'user', 'My sessions', 'See and end where you are signed in', 'violet'], ['/security', 'shield', 'How access works', 'Why you see what you see', 'amber']];
   stats.after(el('nav', { class: 'quick', 'aria-label': 'Quick actions' }, QUICK.map(([href, ic, title, sub, tone]) =>
     el('a', { class: `quick-tile tone-${tone}`, href }, el('span', { class: 'qi' }, icon(ic)), el('span', { class: 'qt' }, el('strong', { text: title }), el('span', { text: sub })), icon('arrow', 'sm qa')))));
@@ -31,7 +31,8 @@
       TV.stat({ label: 'Shared with me', value: s.sharedWithMe, icon: 'users', hint: 'Granted by other owners', href: '/shared', tone: 'teal' }),
       TV.stat({ label: 'Grants I have given', value: s.grantsGiven, icon: 'key', hint: 'Across all my documents', href: '/documents', tone: 'violet' }),
       TV.stat({ label: 'Refused attempts (7 days)', value: s.deniedOnMine, icon: 'alert', hint: 'On my documents', href: '/activity?outcome=denied', tone: 'red', alert: s.deniedOnMine > 0 }),
-      TV.stat({ label: 'In trash', value: s.inTrash, icon: 'trash', hint: 'Nobody can open these', href: '/trash', tone: 'amber' }));
+      TV.stat({ label: 'Due for review', value: s.dueForReview, icon: 'review', hint: 'Grants nobody has confirmed lately', href: '/reviews', tone: 'amber' }),
+      TV.stat({ label: 'In trash', value: s.inTrash, icon: 'trash', hint: 'Nobody can open these', href: '/trash', tone: 'teal' }));
   } else {
     stats.append(
       TV.stat({ label: 'Shared with me', value: s.sharedWithMe, icon: 'users', hint: 'Documents you can open', href: '/shared', tone: 'teal' }),

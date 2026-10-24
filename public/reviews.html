@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Access reviews · TrustVault</title>
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/app.css?v=10">
+<script src="/js/intro.js?v=10"></script>
+<script src="/js/common.js?v=10" defer></script>
+<script src="/js/reviews.js?v=10" defer></script>
+</head>
+<body>
+<div class="shell">
+<div class="main">
+<header class="appbar" id="topbar"></header>
+<main class="content" id="content">
+<div class="page-head">
+  <div>
+    <span class="eyebrow-dark"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#review"/></svg>Access hygiene</span>
+    <h1>Access reviews</h1>
+    <p>Access that outlives its purpose is how leavers and finished contracts keep seeing files. Every grant you have given comes up for review after <b id="review-days">30</b> days: keep it, or take it back.</p>
+  </div>
+</div>
+<div class="stats" id="review-stats"></div>
+<section class="card">
+  <div class="card-head"><div><h2>Grants on your documents</h2><p>Oldest confirmation first. Keeping a grant is recorded; revoking takes effect on the person's next request.</p></div>
+    <div class="actions"><select id="review-filter" aria-label="Show"><option value="due">Due for review</option><option value="all">All grants</option></select></div>
+  </div>
+  <div class="card-body flush" id="review-list"></div>
+</section>
+</main>
+</div>
+</div>
+</body>
+</html>

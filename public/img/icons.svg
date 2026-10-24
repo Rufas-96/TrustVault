@@ -26,6 +26,8 @@
   <symbol id="restore" viewBox="0 0 24 24"><path d="M4 12a8 8 0 108-8 8.5 8.5 0 00-6 2.5L4 8"/><path d="M4 4v4h4"/></symbol>
   <symbol id="sparkle" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z"/><path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8L19 16z"/></symbol>
   <symbol id="layers" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/></symbol>
+  <symbol id="fingerprint" viewBox="0 0 24 24"><path d="M12 11c0 3.5-.5 6.5-2 9"/><path d="M8.5 6.5A6 6 0 0118 11c0 2.5-.3 5-1 7"/><path d="M6 9.5A6.5 6.5 0 006 11c0 2-.4 3.6-1.2 5"/><path d="M15 11c0 2.6-.3 5-1 7.5"/><path d="M9 11a3 3 0 016 0"/><path d="M4.5 6A9.5 9.5 0 0121 9"/></symbol>
+  <symbol id="review" viewBox="0 0 24 24"><path d="M9 11l2 2 4-4"/><path d="M20 12a8 8 0 11-3.2-6.4"/><path d="M20 4v4h-4"/></symbol>
   <symbol id="chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
   <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></symbol>
   <symbol id="globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.8 3.8 5.8 3.8 9s-1.3 6.2-3.8 9c-2.5-2.8-3.8-5.8-3.8-9S9.5 5.8 12 3z"/></symbol>

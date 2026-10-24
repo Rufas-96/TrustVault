@@ -51,6 +51,16 @@
     }
     if (notice.firstChild) notice.firstChild.classList.add('stack-gap');
 
+    // "Why can I see this?": the exact rule that lets this person in, in plain words.
+    const reasons = isOwner
+      ? [['key', 'You own this document', 'Owners always have full access. Nobody else can share it.'],
+        ['users', d.grantCount ? `${d.grantCount} ${d.grantCount === 1 ? 'person has' : 'people have'} been granted access` : 'Nobody else can open it', d.grantCount ? 'Each one by name, and you can take it back at any time.' : 'It is private until you grant someone access.']]
+      : [['key', `${d.myGrant ? d.myGrant.grantedBy : d.owner.displayName} granted you ${d.myAccess === 'edit' ? 'edit' : 'view'} access`, d.myGrant ? `On ${TV.fmtDate(d.myGrant.grantedAt)}, to you by name.` : 'To you by name.'],
+        ['clock', d.myExpiresAt ? `Until ${TV.fmtDateTime(d.myExpiresAt)}` : 'Until the owner takes it back', 'Revoking works on your very next request.']];
+    reasons.push(['fingerprint', 'Every copy is traceable', 'Each download is stamped with its own trace ID and recorded.']);
+    TV.append(TV.clear($('#why')), el('ul', { class: 'why-list' }, reasons.map(([ic, title, sub]) =>
+      el('li', null, el('span', { class: 'why-ic' }, icon(ic, 'sm')), el('div', null, el('strong', { text: title }), el('span', { text: sub }))))));
+
     const latest = d.versions[0];
     TV.append(TV.clear($('#details')), [
       el('dt', { text: 'Owner' }), el('dd', { text: `${d.owner.displayName} (@${d.owner.username})` }),

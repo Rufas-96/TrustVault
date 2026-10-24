@@ -1299,3 +1299,89 @@ tbody tr:hover { box-shadow: inset 3px 0 0 #8b5cf6; }
   .page-head::after, .banner::after { display: none; }
   .page-head > .actions, .banner > .actions { margin-right: 0; }
 }
+
+/* =========================================================================
+   LEAK FORENSICS, ACCESS REVIEWS, "WHY CAN I SEE THIS?"
+   ========================================================================= */
+/* Top bar has more sections now: icons give way to labels below wide screens */
+@media (max-width: 1600px) { .appnav-link .icon { display: none; } .appnav-link { padding: 0 9px; } .appnav-link.active::after { left: 9px; right: 9px; } }
+
+/* ---------- Leak tracer ---------- */
+.tracer-drop { padding: 46px 20px; border-color: rgba(236, 72, 153, 0.45); background: radial-gradient(60% 90% at 50% 0%, rgba(236, 72, 153, 0.16), transparent), rgba(6, 10, 28, 0.45); }
+.tracer-drop > .icon { width: 30px; height: 30px; padding: 14px; background: linear-gradient(135deg, #ec4899, #8b5cf6); box-shadow: 0 0 30px -4px rgba(236, 72, 153, 0.8); }
+@media (prefers-reduced-motion: no-preference) { .tracer-drop > .icon { animation: livepulse 2.4s infinite; border-radius: 50%; } }
+.or-line { display: flex; align-items: center; gap: 12px; margin: 20px 0 14px; color: var(--ink-3); font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; }
+.or-line::before, .or-line::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.trace-form { display: flex; gap: 10px; }
+.trace-form input { font-family: var(--mono); font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; }
+#trace-result:not(:empty) { border-top: 1px solid var(--line); }
+.trace-hit { padding: 20px 22px; background: linear-gradient(120deg, rgba(236, 72, 153, 0.14), transparent 60%); animation: enter 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.hit-head { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.hit-head > .icon { width: 44px; height: 44px; padding: 11px; border-radius: 50%; color: #fff; background: linear-gradient(135deg, #ec4899, #f43f5e); box-shadow: 0 0 26px -4px rgba(244, 63, 94, 0.85); }
+.hit-head strong { display: block; font-size: 17px; color: #fff; }
+.hit-head span { font-family: var(--mono); font-size: 12.5px; color: #f9a8d4; }
+.hit-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.hit-list li { display: flex; align-items: center; gap: 12px; margin: 0; padding: 12px 14px; border-radius: 12px; background: rgba(6, 10, 28, 0.5); border: 1px solid var(--line); }
+.hit-body { flex: 1; min-width: 0; }
+.hit-who { color: var(--ink-2); }
+.hit-who strong { color: #fff; }
+.stamp-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.stamp-list li { display: flex; gap: 12px; align-items: flex-start; margin: 0; }
+.stamp-list strong { display: block; font-size: 13.5px; color: #fff; }
+.stamp-list span:not(.file-badge) { font-size: 12.8px; color: var(--ink-2); }
+
+/* ---------- Why can I see this? ---------- */
+.why-card { border-color: rgba(34, 211, 238, 0.3); }
+.why-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.why-list li { display: flex; gap: 12px; align-items: flex-start; margin: 0; }
+.why-ic { width: 30px; height: 30px; flex: none; display: grid; place-items: center; border-radius: 9px; color: #67e8f9; background: rgba(34, 211, 238, 0.12); box-shadow: inset 0 0 0 1px rgba(34, 211, 238, 0.35); }
+.why-list li:last-child .why-ic { color: #f9a8d4; background: rgba(236, 72, 153, 0.12); box-shadow: inset 0 0 0 1px rgba(236, 72, 153, 0.35); }
+.why-list strong { display: block; font-size: 13.5px; color: #fff; }
+.why-list span { font-size: 12.8px; color: var(--ink-2); }
+
+/* ---------- Landing: leak forensics section ---------- */
+.forensics { display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: center; }
+.forensics-copy h2 { font-size: 32px; line-height: 1.18; letter-spacing: -0.03em; color: #fff; margin: 12px 0 14px; }
+.forensics-copy > p { color: var(--ink-2); font-size: 15.5px; }
+.forensics-points { list-style: none; margin: 22px 0 0; padding: 0; display: grid; gap: 16px; }
+.forensics-points li { display: flex; gap: 14px; align-items: flex-start; margin: 0; }
+.forensics-points .icon { width: 40px; height: 40px; padding: 10px; flex: none; border-radius: 12px; color: #fff; background: linear-gradient(135deg, #ec4899, #8b5cf6); box-shadow: 0 0 22px -4px rgba(236, 72, 153, 0.75); }
+.forensics-points li:nth-child(2) .icon { background: linear-gradient(135deg, #f59e0b, #ec4899); }
+.forensics-points li:nth-child(3) .icon { background: linear-gradient(135deg, #22d3ee, #6366f1); }
+.forensics-points strong { display: block; color: #fff; font-size: 15px; }
+.forensics-points span { color: var(--ink-2); font-size: 13.8px; }
+.copies { position: relative; height: 360px; }
+.copy { position: absolute; width: 250px; padding: 16px; border-radius: 16px; background: linear-gradient(160deg, rgba(30, 38, 78, 0.92), rgba(12, 17, 40, 0.88)); border: 1px solid var(--line-strong); box-shadow: 0 24px 50px -16px rgba(0, 0, 0, 0.8); }
+.copy.c-a { left: 4%; top: 10px; transform: rotate(-5deg); border-color: rgba(236, 72, 153, 0.55); box-shadow: 0 24px 50px -16px rgba(0, 0, 0, 0.8), 0 0 36px -8px rgba(236, 72, 153, 0.7); }
+.copy.c-b { right: 4%; top: 60px; transform: rotate(4deg); }
+.copy-head { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; }
+.copy-head strong { display: block; font-size: 13px; color: #fff; }
+.copy-head span { font-size: 11.5px; color: var(--ink-3); }
+.copy-lines { display: grid; gap: 7px; margin-bottom: 14px; }
+.copy-lines i { display: block; height: 7px; border-radius: 4px; background: rgba(148, 163, 255, 0.16); }
+.copy-lines i:nth-child(2) { width: 82%; } .copy-lines i:nth-child(3) { width: 90%; } .copy-lines i:nth-child(4) { width: 60%; }
+.copy-trace { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 8px; font-family: var(--mono); font-size: 12px; font-weight: 600; color: #67e8f9; background: rgba(34, 211, 238, 0.1); box-shadow: inset 0 0 0 1px rgba(34, 211, 238, 0.35); }
+.copy.c-a .copy-trace { color: #f9a8d4; background: rgba(236, 72, 153, 0.12); box-shadow: inset 0 0 0 1px rgba(236, 72, 153, 0.5); }
+.copy-match { position: absolute; left: 50%; bottom: 6px; transform: translateX(-50%); display: flex; gap: 12px; align-items: center; padding: 13px 18px; border-radius: 14px; white-space: nowrap; background: linear-gradient(120deg, rgba(225, 29, 72, 0.92), rgba(219, 39, 119, 0.92)); box-shadow: 0 18px 40px -10px rgba(244, 63, 94, 0.8); }
+.copy-match .icon { width: 30px; height: 30px; color: #fff; }
+.copy-match strong { display: block; color: #fff; font-size: 14px; }
+.copy-match span { font-family: var(--mono); font-size: 12px; color: #ffe4e6; }
+.copy-match.reveal { transform: translateX(-50%) translateY(28px); }
+.copy-match.reveal.in { transform: translateX(-50%); }
+.copy.c-a.reveal { transform: rotate(-5deg) translateY(28px); }
+.copy.c-a.reveal.in { transform: rotate(-5deg); }
+.copy.c-b.reveal { transform: rotate(4deg) translateY(28px); }
+.copy.c-b.reveal.in { transform: rotate(4deg); }
+@media (prefers-reduced-motion: no-preference) { .copy-match.in { animation: alarm 2.4s 1s ease-in-out infinite; } }
+
+@media (max-width: 980px) {
+  .forensics { grid-template-columns: 1fr; }
+  .copies { height: 380px; }
+  .trace-form { flex-direction: column; }
+}
+@media (max-width: 640px) {
+  .copy { width: 210px; }
+  .copy.c-b { top: 110px; }
+  .copy-match { white-space: normal; width: 90%; }
+  .forensics-copy h2 { font-size: 25px; }
+}

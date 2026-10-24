@@ -7,9 +7,9 @@
 <meta name="description" content="Share confidential documents with named people, take access back instantly, and prove who opened what.">
 <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/css/app.css?v=9">
-<script src="/js/intro.js?v=9"></script>
-<script src="/js/landing.js?v=9" defer></script>
+<link rel="stylesheet" href="/css/app.css?v=10">
+<script src="/js/intro.js?v=10"></script>
+<script src="/js/landing.js?v=10" defer></script>
 </head>
 <body class="public">
 <header class="public-nav">
@@ -17,6 +17,7 @@
   <nav class="links">
     <a class="hide-sm" href="#usecases">Use cases</a>
     <a class="hide-sm" href="#pipeline">How it checks</a>
+    <a class="hide-sm" href="#forensics">Leak forensics</a>
     <a class="hide-sm" href="#standards">Guarantees</a>
     <a href="/security">Security model</a>
     <a class="btn primary" id="cta-nav" href="/login">Sign in</a>
@@ -27,17 +28,17 @@
   <div class="hero-wrap">
     <section class="hero">
       <div>
-        <span class="eyebrow"><b>Vault</b>Per-document access · tamper-evident audit · instant revocation</span>
+        <span class="eyebrow"><b>New</b>Leak forensics: every download is a traceable copy</span>
         <h1>Confidential files, locked to <span class="grad-text">exactly the right people.</span></h1>
-        <p class="lead">Salary letters for employees, contracts for customers, drawings for partners, audit papers for regulators. Share each file with <mark class="hl">named people only</mark>, take access back and <mark class="hl">it stops working on their next click</mark>, and <mark class="hl">prove who opened what</mark>, including every refused attempt.</p>
+        <p class="lead">Salary letters for employees, contracts for customers, drawings for partners, audit papers for regulators. Share each file with <mark class="hl">named people only</mark>, take access back and <mark class="hl">it stops working on their next click</mark>, and if a file leaks anyway, <mark class="hl">trace it back to the exact copy</mark> that got out.</p>
         <div class="actions">
           <a class="btn primary cta-pulse" id="cta-main" href="/login">Open the vault <svg class="icon sm" aria-hidden="true"><use href="/img/icons.svg#arrow"/></svg></a>
           <a class="btn" href="#pipeline">See how access is checked</a>
         </div>
         <div class="hero-trust">
           <span><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#check"/></svg>AES-256-GCM per file</span>
-          <span><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#check"/></svg>No share links</span>
-          <span><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#check"/></svg>64 access-control tests</span>
+          <span><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#check"/></svg>Traceable downloads</span>
+          <span><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#check"/></svg>78 automated tests</span>
         </div>
       </div>
 
@@ -122,13 +123,33 @@
         <li class="pipe-step"><span class="pn">03</span><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#key"/></svg><h3>Grant</h3><p>Owner, or a live read/edit grant to this exact person. No folders, no inheritance.</p></li>
         <li class="pipe-step"><span class="pn">04</span><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#clock"/></svg><h3>Expiry &amp; trash</h3><p>Expired grants and documents in the trash are refused, with no job to run.</p></li>
         <li class="pipe-step"><span class="pn">05</span><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#list"/></svg><h3>Audit first</h3><p>The download is written to the hash-chained log before a single byte is sent.</p></li>
-        <li class="pipe-step"><span class="pn">06</span><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#lock"/></svg><h3>Decrypt &amp; verify</h3><p>The file is decrypted with its own key and its checksum verified, then sent as an attachment.</p></li>
+        <li class="pipe-step"><span class="pn">06</span><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#lock"/></svg><h3>Decrypt, verify, stamp</h3><p>Decrypted with its own key, checksum verified, then stamped with a unique trace ID for this reader.</p></li>
       </ol>
       <p class="pipe-note"><svg class="icon sm" aria-hidden="true"><use href="/img/icons.svg#x"/></svg>Fail any check and the answer is <b>“Document not found”</b>. Guessing IDs teaches an attacker nothing, and the attempt is logged.</p>
     </div>
   </section>
 
-  <section class="section alt" id="standards">
+  <section class="section alt" id="forensics">
+    <div class="inner forensics">
+      <div class="forensics-copy">
+        <span class="kicker">Leak forensics</span>
+        <h2>Blocking the wrong person is half the job. Finding the leak is the other half.</h2>
+        <p>Someone who was allowed to read a file can still forward it. So TrustVault never hands out the same file twice: every download is stamped with its own trace ID, and the audit trail remembers the exact bytes each person received.</p>
+        <ul class="forensics-points">
+          <li><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#fingerprint"/></svg><div><strong>Leak Tracer</strong><span>Drop the leaked file in, and see whose copy it was, which version, and when it left the vault.</span></div></li>
+          <li><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#review"/></svg><div><strong>Access reviews</strong><span>Grants go stale after 30 days. Owners keep or revoke each one, so leavers and finished contracts lose access.</span></div></li>
+          <li><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#eye"/></svg><div><strong>“Why can I see this?”</strong><span>Every reader is told exactly who granted their access, and that their copy is traceable.</span></div></li>
+        </ul>
+      </div>
+      <div class="copies" aria-label="Two downloads of the same document, each with its own trace ID">
+        <div class="copy c-a"><div class="copy-head"><span class="file-badge pdf">pdf</span><div><strong>salary-letter.pdf</strong><span>Carol · 10:14</span></div></div><div class="copy-lines"><i></i><i></i><i></i><i></i></div><div class="copy-trace"><svg class="icon sm" aria-hidden="true"><use href="/img/icons.svg#fingerprint"/></svg>TV-7KQ4M-X2PDA</div></div>
+        <div class="copy c-b"><div class="copy-head"><span class="file-badge pdf">pdf</span><div><strong>salary-letter.pdf</strong><span>Alice · 16:02</span></div></div><div class="copy-lines"><i></i><i></i><i></i><i></i></div><div class="copy-trace"><svg class="icon sm" aria-hidden="true"><use href="/img/icons.svg#fingerprint"/></svg>TV-N8B3R-HW5YC</div></div>
+        <div class="copy-match"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#fingerprint"/></svg><div><strong>Leaked copy traced</strong><span>TV-7KQ4M-X2PDA → Carol, v2, 10:14</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="standards">
     <div class="inner">
       <div class="section-head">
         <span class="kicker">The three standards it has to meet</span>
@@ -175,8 +196,8 @@
   </section>
 
   <section class="cta">
-    <h2>Try to break into it</h2>
-    <p>Sign in as Carol, ask for the payroll file, and watch the refusal appear in the admin's audit log. Then revoke something and try again.</p>
+    <h2>Try to break into it, or leak from it</h2>
+    <p>Sign in as Carol and ask for the payroll file: refused and logged. Download her salary letter, then sign in as Alice and drop it into the Leak Tracer.</p>
     <a class="btn primary cta-pulse" href="/login">Open the demo vault <svg class="icon sm" aria-hidden="true"><use href="/img/icons.svg#arrow"/></svg></a>
   </section>
 </main>

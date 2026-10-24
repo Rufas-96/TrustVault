@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leak tracer · TrustVault</title>
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/app.css?v=10">
+<script src="/js/intro.js?v=10"></script>
+<script src="/js/common.js?v=10" defer></script>
+<script src="/js/trace.js?v=10" defer></script>
+</head>
+<body>
+<div class="shell">
+<div class="main">
+<header class="appbar" id="topbar"></header>
+<main class="content" id="content">
+<div class="page-head">
+  <div>
+    <span class="eyebrow-dark"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#fingerprint"/></svg>Leak forensics</span>
+    <h1>Leak tracer</h1>
+    <p>Found one of your documents somewhere it should not be? Every download from TrustVault is a unique, stamped copy. Drop the file here, or type the trace ID printed in it, and see exactly whose copy it was.</p>
+  </div>
+</div>
+<div class="grid side">
+  <section class="card">
+    <div class="card-head"><div><h2>Trace a copy</h2><p>The file is checked in memory and never stored.</p></div></div>
+    <div class="card-body">
+      <label class="dropzone tracer-drop" id="drop" for="leak-file">
+        <svg class="icon" aria-hidden="true"><use href="/img/icons.svg#fingerprint"/></svg>
+        <strong>Drop the leaked file here</strong>
+        <span class="subtle">Any type, up to 10 MB. We match its fingerprint and look for its trace ID.</span>
+        <input type="file" id="leak-file">
+      </label>
+      <div class="or-line"><span>or enter the trace ID</span></div>
+      <form id="trace-form" class="trace-form" autocomplete="off">
+        <input type="text" id="trace-id" placeholder="TV-ABCDE-FGHJK" maxlength="20" spellcheck="false" aria-label="Trace ID">
+        <button class="btn primary" type="submit" id="trace-btn"><svg class="icon sm" aria-hidden="true"><use href="/img/icons.svg#search"/></svg>Trace</button>
+      </form>
+      <div class="form-error" id="trace-error" role="alert"></div>
+    </div>
+    <div id="trace-result"></div>
+  </section>
+  <aside class="stack">
+    <section class="card">
+      <div class="card-head"><h2>How a copy is stamped</h2></div>
+      <div class="card-body">
+        <ul class="stamp-list">
+          <li><span class="file-badge txt">txt</span><div><strong>Text &amp; CSV</strong><span>A visible footer line names the reader and the trace ID.</span></div></li>
+          <li><span class="file-badge pdf">pdf</span><div><strong>PDF</strong><span>A hidden comment after the end-of-file marker. The PDF opens normally.</span></div></li>
+          <li><span class="file-badge docx">docx</span><div><strong>Word, Excel, PowerPoint</strong><span>Written into the archive comment of the file.</span></div></li>
+          <li><span class="file-badge png">img</span><div><strong>PNG &amp; JPEG</strong><span>A metadata text chunk or comment segment.</span></div></li>
+        </ul>
+      </div>
+    </section>
+    <div class="notice info"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#info"/></svg><div>Owners can only trace copies of documents they own. Administrators can trace everything. Every lookup is recorded in the audit trail.</div></div>
+    <div class="notice warning"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#alert"/></svg><div>Stamps can be removed by someone who knows to look, and a photo of the screen carries none. If the stamp is gone but the file is unchanged, its fingerprint still matches.</div></div>
+  </aside>
+</div>
+</main>
+</div>
+</div>
+</body>
+</html>

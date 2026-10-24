@@ -91,7 +91,8 @@
     document.body.append(a);
     a.click();
     setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
-    TV.toast(`Downloaded ${name}. This download was recorded in the audit trail.`, 'success');
+    const trace = res.headers.get('x-trustvault-trace');
+    TV.toast(trace ? `Downloaded ${name}. This copy is traceable: ${trace}.` : `Downloaded ${name}. Recorded in the audit trail.`, 'success');
   };
 
   // ---- Formatting -----------------------------------------------------------------------
@@ -134,6 +135,7 @@
     'user.create': 'Created a user', 'user.update': 'Updated a user', 'user.password_reset': 'Reset a password',
     'user.sessions_revoked': 'Signed a user out everywhere', 'audit.verify': 'Verified the audit trail',
     'audit.export': 'Exported the audit trail', 'system.seed': 'Demo data created',
+    'trace.lookup': 'Traced a leaked copy', 'permission.review': 'Confirmed access is still needed',
     'document.restore_denied': 'Restore refused',
   };
   TV.describe = (entry) => {
@@ -153,6 +155,9 @@
     if (d.reason && entry.outcome !== 'success') parts.push(`reason: ${String(d.reason).replace(/_/g, ' ')}`);
     if (d.via === 'suggestion') parts.push('via suggestion');
     if (d.byAdministrator) parts.push('by administrator');
+    if (d.traceId && entry.action === 'document.download') parts.push(`trace ${d.traceId}`);
+    if (entry.action === 'trace.lookup') parts.push(`${d.matches} match${d.matches === 1 ? '' : 'es'}${d.traceId ? ` for ${d.traceId}` : ''}`);
+    if (d.demo) parts.push('(demo data)');
     return parts.join(' ');
   };
 
@@ -209,16 +214,20 @@
   // and an account menu. The nav only hides links; every page's API still checks the role.
   const NAV = [
     { href: '/dashboard', label: 'Dashboard', icon: 'grid', roles: ['owner', 'viewer'] },
-    { href: '/documents', label: 'My documents', icon: 'folder', roles: ['owner'] },
-    { href: '/shared', label: 'Shared with me', icon: 'users', roles: ['owner', 'viewer'] },
+    { href: '/documents', label: 'Documents', icon: 'folder', roles: ['owner'] },
+    { href: '/shared', label: 'Shared with me', icon: 'users', roles: ['viewer'] },
+    { href: '/shared', label: 'Shared', icon: 'users', roles: ['owner'] },
     { href: '/search', label: 'Search', icon: 'search', roles: ['owner', 'viewer'] },
     { href: '/activity', label: 'Activity', icon: 'activity', roles: ['owner'] },
+    { href: '/reviews', label: 'Reviews', icon: 'review', roles: ['owner'] },
+    { href: '/trace', label: 'Leak tracer', icon: 'fingerprint', roles: ['owner'] },
     { href: '/trash', label: 'Trash', icon: 'trash', roles: ['owner'] },
     { href: '/admin', label: 'Overview', icon: 'grid', roles: ['admin'] },
     { href: '/admin-audit', label: 'Audit log', icon: 'list', roles: ['admin'] },
     { href: '/admin-permissions', label: 'Permissions', icon: 'key', roles: ['admin'] },
     { href: '/admin-documents', label: 'Documents', icon: 'file', roles: ['admin'] },
     { href: '/admin-users', label: 'Users', icon: 'users', roles: ['admin'] },
+    { href: '/trace', label: 'Leak tracer', icon: 'fingerprint', roles: ['admin'] },
   ];
 
   function renderShell(user, active) {

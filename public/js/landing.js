@@ -26,6 +26,8 @@
     ['.usecase'],
     ['.pipe-step'],
     ['.standard'],
+    ['.forensics-points li'],
+    ['.copies .copy, .copies .copy-match'],
     ['.cta'],
   ];
   const io = new IntersectionObserver((entries) => {

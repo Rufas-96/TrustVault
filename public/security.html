@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Security model · TrustVault</title>
 <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="/css/app.css?v=9">
-<script src="/js/intro.js?v=9"></script>
+<link rel="stylesheet" href="/css/app.css?v=10">
+<script src="/js/intro.js?v=10"></script>
 </head>
 <body class="public">
 <header class="public-nav">
@@ -71,6 +71,18 @@
     <li>Each entry carries an HMAC of the previous entry's hash plus its own contents. Changing or removing an entry breaks the chain, and the administrator's “Verify” button shows exactly where.</li>
     <li>Each entry is also written to the server log, a second copy held outside the database.</li>
   </ul>
+
+  <h2>Leak forensics: every copy is traceable</h2>
+  <p>Access control stops the wrong person. It cannot stop the right person from forwarding what they were given. So <mark class="hl">TrustVault never hands out the same file twice</mark>.</p>
+  <ul>
+    <li>Each download gets its own trace ID, stamped into the copy: a visible footer for text and CSV, a comment after the end of a PDF, the archive comment of Word/Excel/PowerPoint files, a metadata chunk in PNG and a comment segment in JPEG. The stored original is never changed.</li>
+    <li>The audit entry records the trace ID and the SHA-256 of the exact bytes that person received.</li>
+    <li>The <b>Leak Tracer</b> takes a leaked file (or its trace ID) and names the download it came from. The file is checked in memory and never stored. Owners can only trace their own documents; administrators can trace everything; every lookup is itself audited.</li>
+    <li>Limits, stated plainly: someone who knows to look can strip a stamp, and a photo of the screen carries none. An unmodified copy still matches by its fingerprint.</li>
+  </ul>
+
+  <h2>Access reviews</h2>
+  <p>Grants go stale after 30 days without confirmation. Owners see them on their <b>Access reviews</b> page and keep or revoke each one, and both decisions are audited. Administrators are alerted to grants nobody has confirmed in 90 days. Every reader can open <b>“Why can I see this?”</b> on a document to see exactly who granted their access.</p>
 
   <h2>Files</h2>
   <p>Uploads are checked against an allow-list, and the file's first bytes must match its extension. Files are encrypted with AES-256-GCM using a key per file, stored under random names outside the web root, and bound to their database record so they cannot be swapped. Downloads are always served as attachments with headers that stop a browser running them.</p>
