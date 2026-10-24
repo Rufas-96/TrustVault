@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Security model · TrustVault</title>
 <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="/css/app.css?v=5">
+<link rel="stylesheet" href="/css/app.css?v=9">
+<script src="/js/intro.js?v=9"></script>
 </head>
 <body class="public">
 <header class="public-nav">
@@ -49,11 +50,11 @@
   <p>There are no folders and no inherited permissions, on purpose: getting access to one file never brings access to others. Grants can carry an expiry date. A document in the trash can be reached by nobody except its owner, and only to restore or purge it.</p>
 
   <h2>Where the decision is made</h2>
-  <p>Every request that touches a single document goes through one server function, <code>authorize()</code> in <code>src/authz.js</code>, before anything is read or changed. It reads the live permission table each time. Lists and search apply the same rule inside the database query, so a document you cannot open never appears in results or counts. Hiding a button in the interface is never what protects anything.</p>
+  <p>Every request that touches a single document goes through <mark class="hl">one server function</mark>, <code>authorize()</code> in <code>src/authz.js</code>, before anything is read or changed. It reads the live permission table each time. Lists and search apply the same rule inside the database query, so a document you cannot open never appears in results or counts. Hiding a button in the interface is never what protects anything.</p>
   <p>When you have no access, the answer is “not found”, whether the document exists or not, so guessing IDs tells you nothing. Document IDs are random UUIDs.</p>
 
   <h2>Taking access away</h2>
-  <p>TrustVault never issues share links, download tokens, or signed URLs. The only credential is your session, which is checked on the server on every request. So:</p>
+  <p><mark class="hl">TrustVault never issues share links, download tokens, or signed URLs.</mark> The only credential is your session, which is checked on the server on every request. So:</p>
   <ul>
     <li>Revoking a grant: the person's next request for that document is refused.</li>
     <li>Deactivating a person: all of their sessions are deleted at once.</li>
@@ -64,8 +65,8 @@
   <h2>The audit trail</h2>
   <ul>
     <li>Records sign-ins, uploads, views, downloads, edits, deletions, restores, permission changes, sharing suggestions and admin actions, with who, when, from where, and the outcome.</li>
-    <li>Refused attempts are recorded too, with the reason.</li>
-    <li>A download is recorded <em>before</em> the file is sent. If the record cannot be written, the file is not served.</li>
+    <li><mark class="hl">Refused attempts are recorded too</mark>, with the reason.</li>
+    <li><mark class="hl">A download is recorded <em>before</em> the file is sent.</mark> If the record cannot be written, the file is not served.</li>
     <li>The database rejects any update or delete of audit rows.</li>
     <li>Each entry carries an HMAC of the previous entry's hash plus its own contents. Changing or removing an entry breaks the chain, and the administrator's “Verify” button shows exactly where.</li>
     <li>Each entry is also written to the server log, a second copy held outside the database.</li>

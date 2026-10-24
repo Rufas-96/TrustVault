@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#22d3ee"/>
+      <stop offset="0.5" stop-color="#8b5cf6"/>
+      <stop offset="1" stop-color="#ec4899"/>
+    </linearGradient>
+  </defs>
+  <g fill="none" stroke="url(#g)">
+    <circle cx="200" cy="200" r="190" stroke-width="1.5" opacity="0.55"/>
+    <circle cx="200" cy="200" r="172" stroke-width="10" stroke-dasharray="2 9" opacity="0.45"/>
+    <circle cx="200" cy="200" r="150" stroke-width="1" opacity="0.5"/>
+    <circle cx="200" cy="200" r="128" stroke-width="22" stroke-dasharray="1 23" opacity="0.35"/>
+    <circle cx="200" cy="200" r="104" stroke-width="1.2" opacity="0.55"/>
+    <circle cx="200" cy="200" r="86" stroke-width="1" stroke-dasharray="6 6" opacity="0.5"/>
+    <circle cx="200" cy="200" r="40" stroke-width="1.5" opacity="0.6"/>
+    <path d="M200 10v36M200 354v36M10 200h36M354 200h36" stroke-width="2" opacity="0.6"/>
+    <path d="M66 66l24 24M310 310l24 24M334 66l-24 24M90 310l-24 24" stroke-width="1.2" opacity="0.45"/>
+    <path d="M200 160v80M160 200h80" stroke-width="1.2" opacity="0.5"/>
+  </g>
+</svg>

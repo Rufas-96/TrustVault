@@ -7,15 +7,17 @@
 <meta name="description" content="Share confidential documents with named people, take access back instantly, and prove who opened what.">
 <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/css/app.css?v=5">
-<script src="/js/landing.js?v=5" defer></script>
+<link rel="stylesheet" href="/css/app.css?v=9">
+<script src="/js/intro.js?v=9"></script>
+<script src="/js/landing.js?v=9" defer></script>
 </head>
 <body class="public">
 <header class="public-nav">
   <a class="brand" href="/"><span class="brand-mark"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#shield"/></svg></span><span>TrustVault</span></a>
   <nav class="links">
-    <a class="hide-sm" href="#features">Features</a>
-    <a class="hide-sm" href="#how">How it works</a>
+    <a class="hide-sm" href="#usecases">Use cases</a>
+    <a class="hide-sm" href="#pipeline">How it checks</a>
+    <a class="hide-sm" href="#standards">Guarantees</a>
     <a href="/security">Security model</a>
     <a class="btn primary" id="cta-nav" href="/login">Sign in</a>
   </nav>
@@ -25,34 +27,38 @@
   <div class="hero-wrap">
     <section class="hero">
       <div>
-        <span class="eyebrow"><b>New</b>Tamper-evident audit trail, verified in one click</span>
-        <h1>The wrong person never reads the file. <span class="grad-text">And you can prove who did.</span></h1>
-        <p class="lead">Share salary letters, contracts, drawings and audit papers with exactly the people who need them. Take access back and it stops working at once. Every open, download and refusal is recorded.</p>
+        <span class="eyebrow"><b>Vault</b>Per-document access · tamper-evident audit · instant revocation</span>
+        <h1>Confidential files, locked to <span class="grad-text">exactly the right people.</span></h1>
+        <p class="lead">Salary letters for employees, contracts for customers, drawings for partners, audit papers for regulators. Share each file with <mark class="hl">named people only</mark>, take access back and <mark class="hl">it stops working on their next click</mark>, and <mark class="hl">prove who opened what</mark>, including every refused attempt.</p>
         <div class="actions">
-          <a class="btn primary" id="cta-main" href="/login">Sign in to TrustVault <svg class="icon sm" aria-hidden="true"><use href="/img/icons.svg#arrow"/></svg></a>
-          <a class="btn" href="/security">How access is decided</a>
+          <a class="btn primary cta-pulse" id="cta-main" href="/login">Open the vault <svg class="icon sm" aria-hidden="true"><use href="/img/icons.svg#arrow"/></svg></a>
+          <a class="btn" href="#pipeline">See how access is checked</a>
         </div>
         <div class="hero-trust">
-          <span><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#check"/></svg>Encrypted at rest</span>
-          <span><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#check"/></svg>Per-document grants</span>
-          <span><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#check"/></svg>Instant revocation</span>
+          <span><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#check"/></svg>AES-256-GCM per file</span>
+          <span><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#check"/></svg>No share links</span>
+          <span><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#check"/></svg>64 access-control tests</span>
         </div>
       </div>
 
-      <div class="mock" aria-label="Example audit trail">
+      <div class="mock" aria-label="Example audit trail for a salary letter">
+        <div class="orbit o1"></div><div class="orbit o2"></div>
+        <span class="doc-chip c1"><svg class="icon sm" aria-hidden="true"><use href="/img/icons.svg#lock"/></svg>salary-letter.pdf</span>
+        <span class="doc-chip c2"><svg class="icon sm" aria-hidden="true"><use href="/img/icons.svg#lock"/></svg>msa-northwind.docx</span>
+        <span class="doc-chip c3"><svg class="icon sm" aria-hidden="true"><use href="/img/icons.svg#lock"/></svg>audit-q2.xlsx</span>
         <div class="mock-window">
-          <div class="mock-bar"><i></i><i></i><i></i><span>Audit log · Salary letter 2026</span></div>
+          <div class="mock-bar"><i></i><i></i><i></i><span>Audit log · Salary letter - Carol Diaz 2026</span><span class="live">LIVE</span></div>
           <div class="mock-body">
-            <div class="mock-row"><span class="ico"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#upload"/></svg></span><span class="t">alice uploaded the file<small>09:02 · encrypted, SHA-256 recorded</small></span><span class="badge success">Allowed</span></div>
-            <div class="mock-row"><span class="ico"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#key"/></svg></span><span class="t">alice granted carol view access<small>09:03 · expires 31 Dec</small></span><span class="badge info">Change</span></div>
-            <div class="mock-row"><span class="ico"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#download"/></svg></span><span class="t">carol downloaded v1<small>10:14 · recorded before sending</small></span><span class="badge success">Allowed</span></div>
-            <div class="mock-row"><span class="ico"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#x"/></svg></span><span class="t">alice revoked carol's access<small>11:40 · effective immediately</small></span><span class="badge info">Change</span></div>
-            <div class="mock-row"><span class="ico"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#lock"/></svg></span><span class="t">carol tried to download again<small>11:41 · no access</small></span><span class="badge danger">Refused</span></div>
+            <div class="mock-row"><span class="ico"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#upload"/></svg></span><span class="t">alice uploaded v1<small>09:02 · encrypted · SHA-256 recorded</small></span><span class="badge success">Allowed</span></div>
+            <div class="mock-row"><span class="ico"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#key"/></svg></span><span class="t">alice granted carol view access<small>09:03 · until 31 Dec</small></span><span class="badge info">Grant</span></div>
+            <div class="mock-row"><span class="ico"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#download"/></svg></span><span class="t">carol downloaded v1<small>10:14 · logged before the file was sent</small></span><span class="badge success">Allowed</span></div>
+            <div class="mock-row"><span class="ico"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#x"/></svg></span><span class="t">alice revoked carol's access<small>11:40 · effective immediately</small></span><span class="badge info">Revoke</span></div>
+            <div class="mock-row"><span class="ico"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#lock"/></svg></span><span class="t">carol tried to download again<small>11:41 · reason: no access</small></span><span class="badge danger">Refused</span></div>
           </div>
         </div>
         <div class="mock-float">
           <span class="stat-icon tone-green"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#shield"/></svg></span>
-          <div><strong>Audit chain intact</strong><span>1,284 entries verified</span></div>
+          <div><strong>Audit chain intact</strong><span>Every entry HMAC-sealed</span></div>
         </div>
       </div>
     </section>
@@ -60,49 +66,118 @@
 
   <section class="strip" aria-label="Key facts">
     <div class="inner">
-      <div class="item"><strong>1 decision point</strong><span>Every document request passes one server check</span></div>
-      <div class="item"><strong>0 share links</strong><span>Nothing to forward, nothing to chase</span></div>
-      <div class="item"><strong>AES-256-GCM</strong><span>A separate key for every stored file</span></div>
-      <div class="item"><strong>HMAC chain</strong><span>Edited audit entries are detected</span></div>
+      <div class="item"><strong>1 checkpoint</strong><span>Every document request passes the same server-side decision</span></div>
+      <div class="item"><strong>0 share links</strong><span>Nothing to forward, nothing left behind after you revoke</span></div>
+      <div class="item"><strong>1 key per file</strong><span>AES-256-GCM, bound to its record so files cannot be swapped</span></div>
+      <div class="item"><strong>Every refusal logged</strong><span>The audit trail shows who tried, not just who succeeded</span></div>
     </div>
   </section>
 
-  <section class="section alt" id="features">
+  <section class="section alt" id="usecases">
     <div class="inner">
       <div class="section-head">
-        <span class="kicker">Built around three promises</span>
-        <h2>Simple screens. Serious guarantees.</h2>
-        <p>This is a security problem dressed as a document app. The screens are simple; what sits behind them is what matters.</p>
+        <span class="kicker">Built for the files that get companies in trouble</span>
+        <h2>One vault, four kinds of reader</h2>
+        <p>Every company shares confidential documents with people inside and outside. TrustVault makes each share explicit, named and reversible.</p>
+      </div>
+      <div class="usecases">
+        <article class="usecase">
+          <span class="stat-icon"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#user"/></svg></span>
+          <h3>Salary letters</h3>
+          <p>HR shares each letter with exactly one employee. Nobody else in the company can find it, not even in search.</p>
+          <div class="uc-flow"><span class="chip own">HR owner</span><span class="arrow">→</span><span class="chip read">Employee · view</span></div>
+        </article>
+        <article class="usecase">
+          <span class="stat-icon tone-violet"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#file"/></svg></span>
+          <h3>Customer contracts</h3>
+          <p>Legal lets the customer's contact redline the draft. They can edit and upload versions, but cannot pass it on.</p>
+          <div class="uc-flow"><span class="chip own">Legal owner</span><span class="arrow">→</span><span class="chip edit">Customer · edit</span></div>
+        </article>
+        <article class="usecase">
+          <span class="stat-icon tone-teal"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#layers"/></svg></span>
+          <h3>Partner drawings</h3>
+          <p>Engineering gives a contractor access that expires on its own the day the job ends. No one has to remember to revoke.</p>
+          <div class="uc-flow"><span class="chip own">Engineering</span><span class="arrow">→</span><span class="chip read">Contractor · until date</span></div>
+        </article>
+        <article class="usecase">
+          <span class="stat-icon tone-amber"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#list"/></svg></span>
+          <h3>Audit papers</h3>
+          <p>Finance opens the books to an external auditor, then hands the regulator a record of every open and download.</p>
+          <div class="uc-flow"><span class="chip own">Finance owner</span><span class="arrow">→</span><span class="chip read">Auditor · view</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="pipeline">
+    <div class="inner">
+      <div class="section-head">
+        <span class="kicker">What happens when someone clicks Download</span>
+        <h2>Every request passes the same six checks</h2>
+        <p>Hiding a button protects nothing. The server re-decides on every request, through every route, and writes down the answer.</p>
+      </div>
+      <ol class="pipeline">
+        <li class="pipe-step"><span class="pn">01</span><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#user"/></svg><h3>Session</h3><p>Server-side session, re-read every request. Logged out or deactivated means refused.</p></li>
+        <li class="pipe-step"><span class="pn">02</span><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#shield"/></svg><h3>Same-origin</h3><p>CSRF token and origin checked on every change, so no other site can act for you.</p></li>
+        <li class="pipe-step"><span class="pn">03</span><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#key"/></svg><h3>Grant</h3><p>Owner, or a live read/edit grant to this exact person. No folders, no inheritance.</p></li>
+        <li class="pipe-step"><span class="pn">04</span><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#clock"/></svg><h3>Expiry &amp; trash</h3><p>Expired grants and documents in the trash are refused, with no job to run.</p></li>
+        <li class="pipe-step"><span class="pn">05</span><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#list"/></svg><h3>Audit first</h3><p>The download is written to the hash-chained log before a single byte is sent.</p></li>
+        <li class="pipe-step"><span class="pn">06</span><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#lock"/></svg><h3>Decrypt &amp; verify</h3><p>The file is decrypted with its own key and its checksum verified, then sent as an attachment.</p></li>
+      </ol>
+      <p class="pipe-note"><svg class="icon sm" aria-hidden="true"><use href="/img/icons.svg#x"/></svg>Fail any check and the answer is <b>“Document not found”</b>. Guessing IDs teaches an attacker nothing, and the attempt is logged.</p>
+    </div>
+  </section>
+
+  <section class="section alt" id="standards">
+    <div class="inner">
+      <div class="section-head">
+        <span class="kicker">The three standards it has to meet</span>
+        <h2>Not negotiable. Proven by tests.</h2>
+      </div>
+      <div class="standards">
+        <article class="standard">
+          <span class="snum">One</span>
+          <h3>Reachable only by someone who was granted it</h3>
+          <p>One authorisation function on every route, the same rule inside the search query, and administrators who <mark class="hl">can never read contents</mark> or be granted access.</p>
+          <ul><li>13 routes attacked by a stranger in tests</li><li>Search cannot leak titles or counts</li></ul>
+        </article>
+        <article class="standard">
+          <span class="snum">Two</span>
+          <h3>You can prove who reached it</h3>
+          <p>Append-only log, database triggers that block edits, and an HMAC chain so <mark class="hl">an altered record is detected</mark>. Refusals are recorded too.</p>
+          <ul><li>One-click integrity verification</li><li>Second copy in the platform log</li></ul>
+        </article>
+        <article class="standard">
+          <span class="snum">Three</span>
+          <h3>Taking access away works immediately</h3>
+          <p>No tokens or links are ever issued. Revoke, downgrade or deactivate, and <mark class="hl">the very next request is refused</mark>.</p>
+          <ul><li>Deactivation ends every session</li><li>Old sessions never come back</li></ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="features">
+    <div class="inner">
+      <div class="section-head">
+        <span class="kicker">Everything else a vault needs</span>
+        <h2>Small surface. Serious guarantees.</h2>
       </div>
       <div class="grid cols-3">
-        <div class="feature"><span class="stat-icon"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#lock"/></svg></span><h3>Only the people you name</h3><p>Access is granted per document to named people, as view or edit. No folders that quietly expose forty files. The server decides on every request, by every route.</p></div>
-        <div class="feature"><span class="stat-icon tone-violet"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#list"/></svg></span><h3>Proof of who reached it</h3><p>Uploads, views, downloads, edits, deletions and permission changes are recorded, and so are refused attempts. Edited records are detected.</p></div>
-        <div class="feature"><span class="stat-icon tone-amber"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#zap"/></svg></span><h3>Revocation that is immediate</h3><p>No share links or long-lived tokens to chase. Remove a grant or deactivate a person and their very next request is refused.</p></div>
-        <div class="feature"><span class="stat-icon tone-green"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#shield"/></svg></span><h3>Encrypted at rest</h3><p>Every file is encrypted with its own key and bound to its record, so a copied or swapped file on disk is useless.</p></div>
-        <div class="feature"><span class="stat-icon tone-teal"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#layers"/></svg></span><h3>Versions and trash</h3><p>Every version is kept. Deleted documents go to a trash nobody can open, and can be restored or permanently purged.</p></div>
-        <div class="feature"><span class="stat-icon tone-red"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#sparkle"/></svg></span><h3>Suggestions, never surprises</h3><p>TrustVault can suggest who might need a document. It never shares on its own: you confirm, and both steps are audited.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="how">
-    <div class="inner">
-      <div class="section-head">
-        <span class="kicker">How it works</span>
-        <h2>From upload to proof in three steps</h2>
-      </div>
-      <div class="steps">
-        <div class="step"><h3>Upload privately</h3><p>An owner uploads a file. Its type is checked against its contents, it is encrypted, and nobody else can see it yet.</p></div>
-        <div class="step"><h3>Grant by name</h3><p>The owner gives named people view or edit access, optionally until a date, and can take it back at any moment.</p></div>
-        <div class="step"><h3>Prove what happened</h3><p>Every open, download, change and refusal lands in a hash-chained audit trail that administrators can verify.</p></div>
+        <div class="feature"><span class="stat-icon"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#upload"/></svg></span><h3>Uploads that are checked</h3><p>The file's contents must match its type. Web pages, scripts and executables are refused before they reach the vault.</p></div>
+        <div class="feature"><span class="stat-icon tone-violet"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#layers"/></svg></span><h3>Versions and trash</h3><p>Every version is kept. A trashed document is unreachable until its owner restores or <mark class="hl">permanently purges</mark> it.</p></div>
+        <div class="feature"><span class="stat-icon tone-amber"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#zap"/></svg></span><h3>Alerts worth noticing</h3><p>Repeated refusals, sign-in guessing, download spikes and integrity failures surface on the admin overview.</p></div>
+        <div class="feature"><span class="stat-icon tone-green"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#search"/></svg></span><h3>Search by name, owner, category, date</h3><p>Results only ever include documents you are allowed to open, <mark class="hl">filtered inside the database query</mark>.</p></div>
+        <div class="feature"><span class="stat-icon tone-teal"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#users"/></svg></span><h3>Sessions you can see</h3><p>See every place you are signed in and end any of them. Changing your password signs out the rest.</p></div>
+        <div class="feature"><span class="stat-icon tone-red"><svg class="icon" aria-hidden="true"><use href="/img/icons.svg#sparkle"/></svg></span><h3>Suggestions, never surprises</h3><p>TrustVault suggests who might need a file. It <mark class="hl">never shares on its own</mark>: you confirm, and both steps are audited.</p></div>
       </div>
     </div>
   </section>
 
   <section class="cta">
-    <h2>See it for yourself</h2>
-    <p>Sign in with a demo account, revoke someone's access, and watch their next attempt get refused and recorded.</p>
-    <a class="btn primary" href="/login">Open the demo <svg class="icon sm" aria-hidden="true"><use href="/img/icons.svg#arrow"/></svg></a>
+    <h2>Try to break into it</h2>
+    <p>Sign in as Carol, ask for the payroll file, and watch the refusal appear in the admin's audit log. Then revoke something and try again.</p>
+    <a class="btn primary cta-pulse" href="/login">Open the demo vault <svg class="icon sm" aria-hidden="true"><use href="/img/icons.svg#arrow"/></svg></a>
   </section>
 </main>
 
