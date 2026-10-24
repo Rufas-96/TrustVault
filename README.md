@@ -12,6 +12,18 @@ Secure document sharing where the wrong person cannot reach a document, and you 
 | [WRITEUP.md](WRITEUP.md) | What was built, what was not, the permission model, and AI use |
 | [PROMPTS.md](PROMPTS.md) | AI prompts, where the AI was wrong, and what was done about it |
 
+## About the commit history
+
+- **Two accounts appear in the commits.** Commits from `repudirufas@gmail.com` (GitHub account Rufas-96) are
+  from my own account. 14 commits show `mdmaaz777@gmail.com`, which GitHub links to a second account. That is
+  the git setup of the laptop and Claude Code account I used to build this project; it belongs to someone else.
+  I made those commits myself on that machine (the later ones were pushed by Claude Code when I asked it to).
+  Nobody else wrote, planned or directed any part of this project. From 24 Oct onwards every commit uses my
+  own email.
+- **The first version arrived in one large commit.** The first working version was built in one AI-assisted
+  session with Claude Code on 22 Oct and committed together (`e59ff43`). Everything after that was committed
+  as I went.
+
 ## Demo accounts (one per role)
 
 | Role | Username | Password | What to try |
