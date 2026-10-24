@@ -26,6 +26,9 @@
 
     TV.clear($('#doc-badges')).append(TV.badge(d.category), TV.accessBadge(d.myAccess), TV.badge(`Version ${d.currentVersion}`));
     $('#doc-title').textContent = d.title;
+    const ext = (d.versions[0] && d.versions[0].extension) || 'file';
+    const head = $('#doc-title').parentElement;
+    if (!head.querySelector('.file-badge.xl')) head.prepend(el('span', { class: `file-badge xl ${ext}`, text: ext.slice(0, 4) }));
     $('#doc-desc').textContent = d.description || 'No description.';
 
     const actions = TV.clear($('#doc-actions'));

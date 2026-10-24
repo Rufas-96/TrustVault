@@ -3,6 +3,7 @@
   const { $, api } = TV;
   const form = $('#login-form');
   const error = $('#login-error');
+  TV.cursorGlow();
 
   // Only same-site paths are accepted as a redirect target (no //evil.example, no https://...).
   function safeNext() {

@@ -27,7 +27,7 @@
     const p = query();
     history.replaceState(null, '', p.toString() ? `?${p}` : location.pathname);
     p.set('scope', scope);
-    TV.clear(results).append(el('div', { class: 'empty', text: 'Loading…' }));
+    TV.clear(results).append(TV.skeleton(4));
     try {
       render(await TV.api('GET', `/api/documents?${p}`));
     } catch (err) {

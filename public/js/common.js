@@ -19,6 +19,12 @@
       }
     }
     TV.append(node, children);
+    // Each person's avatar gets a stable colour from their initials.
+    if (node.classList.contains('avatar') && node.textContent) {
+      let h = 0;
+      for (const ch of node.textContent) h = (h * 31 + ch.charCodeAt(0)) % 997;
+      node.dataset.tone = String(h % 6);
+    }
     return node;
   };
   TV.append = function append(node, children) {
@@ -185,7 +191,7 @@
 
   // Wraps an async handler for a form/button: disables it while running and shows errors.
   TV.busy = async function busy(button, fn, errorTarget) {
-    if (button) button.disabled = true;
+    if (button) { button.disabled = true; button.classList.add('is-busy'); }
     if (errorTarget) errorTarget.textContent = '';
     try {
       return await fn();
@@ -194,7 +200,7 @@
       else TV.toast(err.message, 'error');
       return undefined;
     } finally {
-      if (button) button.disabled = false;
+      if (button) { button.disabled = false; button.classList.remove('is-busy'); }
     }
   };
 
@@ -253,13 +259,69 @@
 
   // Stat tile used by the dashboards. tone: blue (default), violet, green, amber, red, teal.
   TV.stat = function stat({ label, value, icon: iconName, hint, href, tone = '', alert = false }) {
+    const valueEl = TV.el('div', { class: 'value', text: value });
+    if (/^\d+$/.test(String(value))) TV.countUp(valueEl, Number(value));
     return TV.el(href ? 'a' : 'div', { class: `stat tone-${tone || 'blue'}${alert ? ' alert' : ''}`, href },
       TV.el('div', { class: 'stat-top' },
         TV.el('span', { class: `stat-icon${tone ? ` tone-${tone}` : ''}` }, TV.icon(iconName)),
         href ? TV.icon('arrow', 'sm stat-arrow') : null),
-      TV.el('div', { class: 'value', text: value }),
+      valueEl,
       TV.el('div', { class: 'label', text: label }),
       hint ? TV.el('div', { class: 'hint', text: hint }) : null);
+  };
+
+  // ---- Motion helpers (all skipped when the user prefers reduced motion) -----------------
+  const calm = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Counts a number up from 0. The final text is always the exact value.
+  TV.countUp = function countUp(node, target, ms = 900) {
+    if (calm() || target === 0) { node.textContent = String(target); return; }
+    const start = performance.now() + 150;
+    node.textContent = '0';
+    const tick = (now) => {
+      const t = Math.min(1, Math.max(0, (now - start) / ms));
+      node.textContent = String(Math.round(target * (1 - (1 - t) ** 3)));
+      if (t < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  };
+
+  // Shimmering placeholder rows while a table loads.
+  TV.skeleton = (rows = 5) => TV.el('div', { class: 'skeleton', 'aria-label': 'Loading' }, Array.from({ length: rows }, () => TV.el('span')));
+
+  // A soft glow that follows the mouse over panels. Values are set through the CSSOM, which
+  // the Content-Security-Policy allows (no inline style attributes are written).
+  document.addEventListener('pointermove', (e) => {
+    const panel = e.target.closest && e.target.closest('.card, .stat, .feature, .step');
+    if (!panel) return;
+    const r = panel.getBoundingClientRect();
+    panel.style.setProperty('--mx', `${e.clientX - r.left}px`);
+    panel.style.setProperty('--my', `${e.clientY - r.top}px`);
+  }, { passive: true });
+
+
+  // Click ripple on every button, starting where the pointer touched it.
+  document.addEventListener('pointerdown', (e) => {
+    const btn = e.target.closest && e.target.closest('.btn');
+    if (!btn || btn.disabled || calm()) return;
+    const r = btn.getBoundingClientRect();
+    const dot = TV.el('span', { class: 'ripple', 'aria-hidden': 'true' });
+    dot.style.left = `${e.clientX - r.left}px`;
+    dot.style.top = `${e.clientY - r.top}px`;
+    btn.append(dot);
+    setTimeout(() => dot.remove(), 650);
+  });
+
+  // Large glow that trails the cursor on the public pages.
+  TV.cursorGlow = function cursorGlow() {
+    if (calm() || !window.matchMedia('(pointer: fine)').matches) return;
+    const glow = TV.el('div', { class: 'cursor-glow', 'aria-hidden': 'true' });
+    document.body.prepend(glow);
+    document.addEventListener('pointermove', (e) => {
+      glow.classList.add('on');
+      glow.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+    }, { passive: true });
+    document.addEventListener('pointerleave', () => glow.classList.remove('on'));
   };
 
   async function signOut() {

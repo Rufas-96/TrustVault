@@ -20,6 +20,11 @@
   const data = await TV.api('GET', '/api/dashboard');
   const s = data.stats;
   const stats = $('#stats');
+  const QUICK = isOwner
+    ? [['/upload', 'upload', 'Upload a document', 'Starts private, encrypted on arrival', 'violet'], ['/search', 'search', 'Search the vault', 'Only what you can open', 'blue'], ['/shared', 'users', 'Shared with me', 'Files others granted you', 'teal'], ['/activity', 'activity', 'Who opened my files', 'Including refused attempts', 'amber']]
+    : [['/shared', 'users', 'Shared with me', 'Files granted to you by name', 'teal'], ['/search', 'search', 'Search the vault', 'Only what you can open', 'blue'], ['/account', 'user', 'My sessions', 'See and end where you are signed in', 'violet'], ['/security', 'shield', 'How access works', 'Why you see what you see', 'amber']];
+  stats.after(el('nav', { class: 'quick', 'aria-label': 'Quick actions' }, QUICK.map(([href, ic, title, sub, tone]) =>
+    el('a', { class: `quick-tile tone-${tone}`, href }, el('span', { class: 'qi' }, icon(ic)), el('span', { class: 'qt' }, el('strong', { text: title }), el('span', { text: sub })), icon('arrow', 'sm qa')))));
   if (isOwner) {
     stats.append(
       TV.stat({ label: 'Documents I own', value: s.owned, icon: 'folder', hint: 'Private unless you share them', href: '/documents' }),
