@@ -3,7 +3,7 @@
 Secure document sharing where the wrong person cannot reach a document, and you can prove who did.
 
 - **Live demo:** https://trustvault-8h1o.onrender.com/
-- **Demo video:** _add your 5-minute video link here_
+- **Demo video:** https://youtu.be/4wLUpabhwBM
 
 | Document | What it covers |
 |---|---|
