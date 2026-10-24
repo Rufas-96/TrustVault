@@ -7,7 +7,7 @@ The single place where document access is decided is `authorize()` in `src/authz
 query uses the same rule written as SQL (`ACCESSIBLE_SQL` in the same file). Most entries below come back to
 those two.
 
-`npm run mutation` deletes 20 individual security checks one at a time and re-runs the tests. Every one
+`npm run mutation` deletes 25 individual security checks one at a time and re-runs the tests. Every one
 is currently caught by at least one failing test (see "Testing the tests" at the end).
 
 ---

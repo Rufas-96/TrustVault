@@ -1,7 +1,7 @@
 # PROMPTS.md
 
 This file records how I used AI to build TrustVault: the instructions I gave the tool, a log of the
-issues found during the build, and five entries describing what it got wrong and what was done instead.
+issues found during the build, and six entries describing what it got wrong and what was done instead.
 
 ## 1. Reusable context I gave the tool
 
@@ -78,3 +78,14 @@ Explain any security decision you make in a code comment, briefly.
   named "title", so whatever the user typed was ignored.
 - **What I did instead:** Changed it to form.elements.title (and the same for category and description) in
   public/js/upload.js and public/js/document.js. (commit: none, fixed before the project was put under git)
+
+### Entry 6 — 2026-10-24 — Every page linked a site icon that was never created
+- **What I asked:** Check the whole deployed project end to end before submitting.
+- **What it produced:** Earlier in the build, the tool had generated all 19 pages with a link to
+  `/img/favicon.svg` and reported the pages as done.
+- **What was wrong (specifically):** The icon file was never written. The shell command meant to create it had
+  failed with a parse error, and the tool did not notice. Every page load got a 404 for the icon. It only
+  showed up when the live site was opened in a browser that logged failed requests.
+- **What I did instead:** Created public/img/favicon.svg and re-checked the live site in a browser: no failed
+  requests. Lesson: "the tool said it wrote the file" is not proof; check the deployed result.
+  (commit: https://github.com/Rufas-96/TrustVault/commit/7f4e5ec)

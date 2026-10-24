@@ -88,7 +88,8 @@ npm start           # http://localhost:3000
 ```
 
 In development, encryption and audit keys are generated once into `data/dev-keys.json`. The database is
-`data/trustvault.db`, and encrypted files are in `data/files/`. To start over, stop the server and delete `data/`.
+`data/trustvault.db`, and encrypted files are in `data/files/`. To start over with fresh demo data, stop the server
+and run `npm run reset-demo` (the old database is moved to `data/backup-<time>/`, not deleted).
 
 ### Tests
 
@@ -139,12 +140,14 @@ src/
   validation.js         upload allow-list, magic-byte checks, filename sanitising
   middleware.js         security headers, CSRF/origin check, role gate, rate limit
   suggestions.js        rule-based sharing suggestions (advisory only)
+  trace.js              leak forensics: stamps every download with a unique trace ID
+  reviews.js            access-review rule (grants unconfirmed for 30 days are due)
   documents.js          create document / add version (file + rows + audit, atomically)
   users.js, passwords.js, http.js, config.js, db.js, seed.js
-  routes/               auth, documents, sharing, admin
-public/                 one HTML page per feature + js/<page>.js + css/app.css
-test/                   authz, audit, uploads, auth test suites
-scripts/                setup, generate-keys, mutation-check
+  routes/               auth, documents, sharing, forensics (Leak Tracer, reviews), admin
+public/                 one HTML page per feature + js/<page>.js (+ js/intro.js) + css/app.css
+test/                   authz, audit, uploads, auth, forensics test suites
+scripts/                setup, reset-demo, generate-keys, mutation-check
 ```
 
 ## Pages

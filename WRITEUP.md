@@ -83,8 +83,9 @@ I didn't trust "all tests pass" as proof, because the AI wrote both the code and
 - **A check with no test:** `accessLevel()` rejecting inactive users had no direct test. One was added.
 - **The upload form ignored the typed title** (`form.title` vs `form.elements.title`). Fixed in the frontend.
 
-Full details for each are in PROMPTS.md section 3. These were fixed before the project was put under git,
-so there are no separate commits to link. The tests named there are the proof.
+Full details for each are in PROMPTS.md section 3. The first five were fixed before the project was put
+under git, so there are no separate commits to link; the tests named there are the proof. The sixth (a site
+icon that every page linked to but that was never created) has its fix commit linked.
 
 ## What is unfinished
 
@@ -92,6 +93,9 @@ so there are no separate commits to link. The tests named there are the proof.
 - Retention policy (automatic purge of trash after N days, audit-log archiving).
 - External anchoring of the audit head hash (today it is only printed to the log and shown to admins).
 - Persistent storage on the free deployment: a restart resets data (T-61).
+- Trace stamps can be stripped by someone who knows to look, and a photo of the screen carries none (T-72).
+  An unmodified copy still matches by its fingerprint.
+- Access reviews prompt the owner; they do not revoke stale grants automatically (T-73).
 - Open-redirect protection on `/login?next=` is client-side and not covered by an automated test.
 - The upload page's client-side checks are convenience only. The server is authoritative, but the client
   messages are not localised or exhaustive.
