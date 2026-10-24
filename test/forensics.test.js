@@ -135,7 +135,7 @@ describe('Leak Tracer (T-71, T-74)', () => {
     assert.equal(last.outcome, 'failure');
   });
 
-  test('a file dropped into the tracer is never stored', async () => {
+  test('a file dropped into the tracer is never stored (T-74)', async () => {
     const files = () => require('node:fs').readdirSync(require('node:path').join(h.ctx.config.dataDir, 'files')).length;
     const n = files();
     await traceByFile(alice, Buffer.from('random leaked bytes TV-QQQQQ-QQQQQ'));
