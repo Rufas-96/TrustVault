@@ -72,6 +72,7 @@ CREATE TABLE IF NOT EXISTS permissions (
   granted_by  TEXT NOT NULL REFERENCES users(id),
   granted_at  INTEGER NOT NULL,
   expires_at  INTEGER,                                 -- NULL = until revoked
+  reviewed_at INTEGER,                                 -- last time the owner confirmed it is still needed
   PRIMARY KEY (document_id, user_id)
 );
 CREATE INDEX IF NOT EXISTS idx_permissions_user ON permissions(user_id);

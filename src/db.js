@@ -11,7 +11,15 @@ function openDatabase(file) {
   db.exec('PRAGMA foreign_keys = ON; PRAGMA busy_timeout = 5000;');
   if (file !== ':memory:') db.exec('PRAGMA journal_mode = WAL;');
   db.exec(SCHEMA);
+  migrate(db);
   return db;
+}
+
+// Columns added after the first release. CREATE TABLE IF NOT EXISTS does not add columns to a
+// table that already exists, so older databases get them here.
+function migrate(db) {
+  const has = (table, column) => db.prepare(`PRAGMA table_info(${table})`).all().some((c) => c.name === column);
+  if (!has('permissions', 'reviewed_at')) db.exec('ALTER TABLE permissions ADD COLUMN reviewed_at INTEGER');
 }
 
 // Runs fn inside one transaction. Nested calls join the outer transaction, so a route can

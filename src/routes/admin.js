@@ -57,6 +57,11 @@ module.exports = function adminRoutes(ctx) {
     if (crossSite) alerts.push({ severity: 'medium', title: `${crossSite} rejected cross-site / CSRF requests in 24 hours`, detail: 'Requests that did not come from the TrustVault pages.', link: '/admin-audit?action=security.' });
     const locked = db.prepare('SELECT username FROM users WHERE locked_until > ?').all(now);
     for (const r of locked) alerts.push({ severity: 'low', title: `Account "${r.username}" is temporarily locked`, detail: 'Locked after 5 failed sign-ins; unlocks automatically after 15 minutes or on password reset.', link: '/admin-users' });
+    const unreviewed = n(`SELECT COUNT(*) AS n FROM permissions p JOIN documents d ON d.id = p.document_id
+      WHERE d.deleted_at IS NULL AND COALESCE(p.reviewed_at, p.granted_at) < ?`, now - 90 * DAY);
+    if (unreviewed) alerts.push({ severity: 'medium', title: `${unreviewed} grants not reviewed by their owner in 90 days`, detail: 'Long-lived access is how leavers and finished contracts keep seeing files. Owners review grants on their Access reviews page.', link: '/admin-permissions' });
+    const traces = n("SELECT COUNT(*) AS n FROM audit_log WHERE action = 'trace.lookup' AND outcome = 'success' AND ts > ?", now - 7 * DAY);
+    if (traces) alerts.push({ severity: 'high', title: `${traces} leaked copies traced in the last 7 days`, detail: 'Someone ran the Leak Tracer on a file and it matched a download. Review who it was.', link: '/admin-audit?action=trace.lookup' });
     const stale = n('SELECT COUNT(*) AS n FROM permissions p JOIN users u ON u.id = p.user_id WHERE u.is_active = 0');
     if (stale) alerts.push({ severity: 'low', title: `${stale} grants belong to deactivated users`, detail: 'They cannot be used (deactivated users cannot sign in), but you may want to clean them up.', link: '/admin-permissions?filter=inactive' });
 

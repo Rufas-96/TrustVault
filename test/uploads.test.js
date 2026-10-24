@@ -69,7 +69,9 @@ test('files are encrypted at rest (T-34)', async () => {
   const onDisk = fs.readFileSync(h.ctx.storage.locate(key));
   assert.ok(!onDisk.includes(marker));
   const dl = await alice.get(`/api/documents/${res.body.id}/download`);
-  assert.equal(dl.raw.toString(), marker);
+  // The original content comes back intact, followed by this copy's trace footer (src/trace.js).
+  assert.ok(dl.raw.toString().startsWith(marker));
+  assert.ok(dl.raw.toString().includes(dl.headers.get('x-trustvault-trace')));
 });
 
 test('downloads are served as attachments that cannot execute (T-35)', async () => {

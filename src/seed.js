@@ -2,6 +2,7 @@
 const { createUser } = require('./users');
 const { createDocument, addVersion } = require('./documents');
 const { transaction } = require('./db');
+const { newTraceId } = require('./trace');
 
 // Demo accounts. These passwords are published in the README on purpose so judges can sign in;
 // change them (or set SEED_DEMO=false) for any real use.
@@ -105,6 +106,12 @@ async function seedDemoData(ctx) {
   grant(u.bob, pricing, u.dave, 'read', Date.now() + DAY);
   db.prepare('UPDATE permissions SET expires_at = ? WHERE document_id = ? AND user_id = ?').run(Date.now() - DAY, pricing, u.dave.id);
 
+  // Some grants are old, so the owners' access-review queue has something in it.
+  const age = (documentId, grantee, days) => db.prepare('UPDATE permissions SET granted_at = ? WHERE document_id = ? AND user_id = ?').run(Date.now() - days * DAY, documentId, grantee.id);
+  age(handbook, u.dave, 64);
+  age(salary, u.carol, 41);
+  age(budget, u.bob, 37);
+
   // ---- Versions, trash -----------------------------------------------------------------------
   addVersion(ctx, { req: null, doc: getDoc(msa), user: u.dave, file: pdf('msa-northwind-redline.pdf', ['Master Services Agreement', 'Between Contoso Ltd and Northwind Traders', '', 'DRAFT v2 - Northwind redline', 'Clause 7: Liability capped at 2x fees paid (proposed).']) });
   addVersion(ctx, { req: null, doc: getDoc(salary), user: u.alice, file: pdf('salary-letter-carol-diaz-2026-v2.pdf', ['Contoso Ltd - Human Resources', '', 'Salary letter - Carol Diaz (revised)', 'Effective 1 April 2026', 'Annual gross: INR 10,08,000', '', 'Confidential: HR and the named employee only.']) });
@@ -118,10 +125,10 @@ async function seedDemoData(ctx) {
   const ev = (actor, action, documentId, outcome = 'success', extra = {}) =>
     audit.record({ actor, action, documentId, outcome, details: { title: documentId ? getDoc(documentId).title : undefined, demo: true, ...extra } });
   ev(u.carol, 'document.view', salary);
-  ev(u.carol, 'document.download', salary, 'success', { version: 2 });
-  ev(u.dave, 'document.download', msa, 'success', { version: 1 });
+  ev(u.carol, 'document.download', salary, 'success', { version: 2, traceId: newTraceId(), traced: 'PDF comment' });
+  ev(u.dave, 'document.download', msa, 'success', { version: 1, traceId: newTraceId(), traced: 'PDF comment' });
   ev(u.priya, 'document.view', auditQ2);
-  ev(u.priya, 'document.download', auditQ2, 'success', { version: 1 });
+  ev(u.priya, 'document.download', auditQ2, 'success', { version: 1, traceId: newTraceId(), traced: 'comment row' });
   for (let i = 0; i < 3; i += 1) ev(u.carol, 'document.download', payroll, 'denied', { reason: 'no_access' });
   ev(u.dave, 'document.view', minutes, 'denied', { reason: 'no_access' });
   ev(u.dave, 'document.download', pricing, 'denied', { reason: 'no_access', note: 'grant expired' });

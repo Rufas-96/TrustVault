@@ -8,6 +8,8 @@ const { CATEGORIES, createDocument, addVersion, sha256 } = require('../documents
 const { ACCESSIBLE_SQL } = require('../authz');
 const { transaction } = require('../db');
 const { presentAuditRow } = require('../audit');
+const { newTraceId, stamp } = require('../trace');
+const { REVIEW_AFTER_MS, LAST_CONFIRMED_SQL } = require('../reviews');
 
 const PAGE_SIZE = 25;
 
@@ -142,8 +144,10 @@ module.exports = function documentRoutes(ctx) {
         u.display_name AS uploaded_by
       FROM document_versions v JOIN users u ON u.id = v.uploaded_by
       WHERE v.document_id = ? ORDER BY v.version DESC`).all(doc.id);
+    // For "Why can I see this?": who granted the caller's access, and when.
     const grant = level === 'owner' ? null
-      : db.prepare('SELECT expires_at FROM permissions WHERE document_id = ? AND user_id = ?').get(doc.id, req.user.id);
+      : db.prepare(`SELECT p.expires_at, p.granted_at, g.display_name AS granted_by FROM permissions p
+          JOIN users g ON g.id = p.granted_by WHERE p.document_id = ? AND p.user_id = ?`).get(doc.id, req.user.id);
     const grantCount = level === 'owner'
       ? db.prepare('SELECT COUNT(*) AS n FROM permissions WHERE document_id = ?').get(doc.id).n
       : undefined;
@@ -160,6 +164,7 @@ module.exports = function documentRoutes(ctx) {
         updatedAt: doc.updated_at,
         myAccess: level,
         myExpiresAt: grant ? grant.expires_at : null,
+        myGrant: grant ? { grantedBy: grant.granted_by, grantedAt: grant.granted_at } : null,
         grantCount,
         versions: versions.map((v) => ({
           version: v.version, fileName: v.original_name, extension: v.extension, sizeBytes: v.size_bytes,
@@ -221,11 +226,18 @@ module.exports = function documentRoutes(ctx) {
       throw new HttpError(500, 'This file failed its integrity check and was not served. An administrator has been notified in the audit log.');
     }
 
+    // Leak forensics: this copy gets its own trace ID (see src/trace.js). The audit entry keeps the
+    // trace ID and the SHA-256 of the exact bytes delivered, so a leaked copy can be traced back.
+    const traceId = newTraceId();
+    const copy = stamp(content, version.extension, { traceId, username: req.user.username });
+
     // Audit first: if the entry cannot be written, the file is not sent. No unrecorded reads.
-    audit.record({ req, action: 'document.download', documentId: doc.id, details: { title: doc.title, version: requested, file: version.original_name } });
+    audit.record({ req, action: 'document.download', documentId: doc.id, details: { title: doc.title, version: requested, file: version.original_name, traceId, traced: copy.method, deliveredSha256: sha256(copy.buffer) } });
+    content = copy.buffer;
     res.set({
       'Content-Type': version.mime_type,
       'Content-Length': String(content.length),
+      'X-TrustVault-Trace': traceId,
       'Content-Disposition': contentDisposition(version.original_name),
       'Content-Security-Policy': "default-src 'none'; sandbox",
       'X-Content-Type-Options': 'nosniff',
@@ -308,6 +320,8 @@ module.exports = function documentRoutes(ctx) {
       grantsGiven: count(`SELECT COUNT(*) AS n FROM permissions p JOIN documents d ON d.id = p.document_id
         WHERE d.owner_id = ? AND d.deleted_at IS NULL`, u.id),
       inTrash: count('SELECT COUNT(*) AS n FROM documents WHERE owner_id = ? AND deleted_at IS NOT NULL', u.id),
+      dueForReview: count(`SELECT COUNT(*) AS n FROM permissions p JOIN documents d ON d.id = p.document_id
+        WHERE d.owner_id = ? AND d.deleted_at IS NULL AND ${LAST_CONFIRMED_SQL} < ?`, u.id, now - REVIEW_AFTER_MS),
       deniedOnMine: count(`SELECT COUNT(*) AS n FROM audit_log WHERE outcome = 'denied' AND ts > ?
         AND document_id IN (SELECT id FROM documents WHERE owner_id = ?)`, now - 7 * 86400000, u.id),
     };

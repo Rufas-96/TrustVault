@@ -34,6 +34,7 @@ function createApp(config) {
   app.use('/api', require('./routes/auth')(ctx));
   app.use('/api', require('./routes/documents')(ctx));
   app.use('/api', require('./routes/sharing')(ctx));
+  app.use('/api', require('./routes/forensics')(ctx));
   app.use('/api/admin', require('./routes/admin')(ctx));
   app.use('/api', (req, res, next) => next(new HttpError(404, 'No such API endpoint')));
 
